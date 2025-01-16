@@ -1,10 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static CharacterManager;
@@ -30,8 +26,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public TMP_Text roundTimer;
     public TMP_Text combatLog;
 
-    public Slider player1CurrentHp;
-    public Slider player2CurrentHp;
+    public Image player1CurrentHp;
+    public Image player2CurrentHp;
     public Slider player1currentResourceSlider;
     public Slider player2currentResourceSlider;
 
