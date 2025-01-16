@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("UI References")]
     public TMP_Text player1NicknameText;
     public TMP_Text player2NicknameText;
-
+    
     public Image player1Image;
     public Image player2Image;
     public GameObject characterChoicePanel;
