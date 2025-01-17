@@ -6616,6 +6616,8 @@ MonoBehaviour:
   focusColor: {r: 0, g: 1, b: 0.07073355, a: 1}
   coldBloodColor: {r: 0.5019608, g: 1, b: 0.9908101, a: 1}
   timerTickSound: {fileID: 0}
+  panelbackgroundimage: {fileID: 21300000, guid: 4edbc5539b441f049966c07e2ba12186, type: 3}
+  panelBackgroundImageComponent: {fileID: 1699138519}
 --- !u!114 &1916685599
 MonoBehaviour:
   m_ObjectHideFlags: 0
