@@ -4035,7 +4035,43 @@ MonoBehaviour:
     kickCooldown: 1
     healPower: 75
     healCharges: 3
-    resourceType: 2
+    resourceType: 3
+    baseHealth: 1000
+    baseResource: 100
+    maxResource: 100
+    booster: 25
+  - id: 11
+    name: darkpaladin
+    description: darkpaladin
+    avatar: {fileID: 21300000, guid: dce3fefcfb54cbd4aae978d210845de2, type: 3}
+    superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
+    superAbilityDescription: darkpaladin
+    attackPower: 104
+    defense: 50
+    parry: 150
+    kickDamage: 30
+    kickCooldown: 1
+    healPower: 75
+    healCharges: 3
+    resourceType: 4
+    baseHealth: 1000
+    baseResource: 100
+    maxResource: 100
+    booster: 25
+  - id: 12
+    name: cyberpriest
+    description: cyberpriest
+    avatar: {fileID: 21300000, guid: 04421be7246f5a449bdd087e41ab8b1e, type: 3}
+    superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
+    superAbilityDescription: cyberpriest
+    attackPower: 104
+    defense: 50
+    parry: 150
+    kickDamage: 30
+    kickCooldown: 1
+    healPower: 75
+    healCharges: 3
+    resourceType: 1
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
@@ -4052,7 +4088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
+  ObservedComponentsFoldoutOpen: 0
   Group: 0
   prefixField: -1
   Synchronization: 3
@@ -4609,7 +4645,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15.013062, y: -13.816498}
+  m_AnchoredPosition: {x: -14.414978, y: -13.755005}
   m_SizeDelta: {x: 28.8297, y: 30.3964}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1326714165
@@ -6090,7 +6126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.10588236, g: 0.10588236, b: 0.10588236, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6616,8 +6652,6 @@ MonoBehaviour:
   focusColor: {r: 0, g: 1, b: 0.07073355, a: 1}
   coldBloodColor: {r: 0.5019608, g: 1, b: 0.9908101, a: 1}
   timerTickSound: {fileID: 0}
-  panelbackgroundimage: {fileID: 21300000, guid: 4edbc5539b441f049966c07e2ba12186, type: 3}
-  panelBackgroundImageComponent: {fileID: 1699138519}
 --- !u!114 &1916685599
 MonoBehaviour:
   m_ObjectHideFlags: 0

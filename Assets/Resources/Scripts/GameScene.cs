@@ -255,11 +255,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void CreateCharacterButtons()
     {
-        const int columns = 5, buttonWidth = 100, buttonHeight = 100, spacing = 10;
+        const int buttonWidth = 100, buttonHeight = 100, spacing = 10;
 
-       
+        // Calculate how many columns can fit on the screen
+        float panelWidth = Screen.width - 2 * spacing; // Consider the spacing on both sides
+        int columns = Mathf.FloorToInt(panelWidth / (buttonWidth + spacing));
 
+        // Calculate the maximum number of rows that can fit on the screen
+        float panelHeight = Screen.height - 2 * spacing; // Consider the spacing on top and bottom
+        int rows = Mathf.FloorToInt(panelHeight / (buttonHeight + spacing));
 
+        // Loop through the initial characters and create buttons
         for (int i = 0; i < chars.initialCharacters.Length; i++)
         {
             var character = chars.initialCharacters[i];
@@ -275,8 +281,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             );
 
             button.onClick.AddListener(() => OnCharacterButtonClicked(character));
+
+            // If the panel is becoming too big, break out of the loop
+            if (row >= rows)
+            {
+                break;
+            }
         }
     }
+
 
     private void OnCharacterButtonClicked(CharacterManager.Character selectedCharacter)
     {
