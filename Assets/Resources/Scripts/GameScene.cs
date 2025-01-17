@@ -272,6 +272,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             Button button = Instantiate(buttonPrefab, characterChoicePanel.transform);
             button.GetComponent<Image>().sprite = character.avatar;
 
+            // Get the BorderImage component from the child object
+            Transform borderTransform = button.transform.Find("BorderImage");
+            if (borderTransform != null)
+            {
+                Image borderImage = borderTransform.GetComponent<Image>();
+                if (borderImage != null)
+                {
+                    // Set the color of the BorderImage based on the character's resource type
+                    borderImage.color = GetResourceColor(character.resourceType);
+                }
+            }
+
             RectTransform rect = button.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
             int row = i / columns, column = i % columns;
@@ -289,6 +301,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
     }
+
 
 
     private void OnCharacterButtonClicked(CharacterManager.Character selectedCharacter)

@@ -4017,7 +4017,7 @@ MonoBehaviour:
     kickCooldown: 1
     healPower: 75
     healCharges: 3
-    resourceType: 1
+    resourceType: 3
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
@@ -4053,7 +4053,7 @@ MonoBehaviour:
     kickCooldown: 1
     healPower: 75
     healCharges: 3
-    resourceType: 4
+    resourceType: 3
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
@@ -4064,6 +4064,24 @@ MonoBehaviour:
     avatar: {fileID: 21300000, guid: 04421be7246f5a449bdd087e41ab8b1e, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: cyberpriest
+    attackPower: 104
+    defense: 50
+    parry: 150
+    kickDamage: 30
+    kickCooldown: 1
+    healPower: 75
+    healCharges: 3
+    resourceType: 1
+    baseHealth: 1000
+    baseResource: 100
+    maxResource: 100
+    booster: 25
+  - id: 13
+    name: vampire
+    description: vampire
+    avatar: {fileID: 21300000, guid: 2f92d529feced5349b4d7610f57df39e, type: 3}
+    superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
+    superAbilityDescription: vampire
     attackPower: 104
     defense: 50
     parry: 150
