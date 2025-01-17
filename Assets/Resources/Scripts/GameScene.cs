@@ -364,8 +364,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (powerSliderBar != null) // установка размера бустера
             {
-                powerSliderBar.maxValue = player.maxPowerBar;
-                powerSliderBar.value = player.currentPowerBar;
+                if (powerSliderBar.maxValue > player.currentResource)
+                {
+                    powerSliderBar.maxValue = player.currentResource;
+                        
+               }
+                else {
+                    powerSliderBar.maxValue = player.maxPowerBar;
+                    powerSliderBar.value = player.currentPowerBar;
+                }
+                
             }
         }
 
@@ -377,7 +385,24 @@ public class GameManager : MonoBehaviourPunCallbacks
         TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : (player == player2 ? playerCurrent2HpText : null);
         UpdateStatText(playerHpText, player.currentHealth.ToString());
         UpdateStatPanel(player);
-       
+        if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
+        (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
+        {
+            if (powerSliderBar != null) // установка размера бустера
+            {
+                if (powerSliderBar.maxValue > player.currentResource)
+                {
+                    powerSliderBar.maxValue = player.currentResource;
+
+                }
+                else
+                {
+                    powerSliderBar.maxValue = player.maxPowerBar;
+                }
+
+            }
+        }
+
     }
 
     private void UpdateStatPanel(GamePlayer player)
