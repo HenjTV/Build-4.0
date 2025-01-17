@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     [Header("UI References")]
+    public TMP_Text roundcountertext;
+
     public TMP_Text player1NicknameText;
     public TMP_Text player2NicknameText;
     
@@ -85,7 +87,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private string player1Id, player2Id;
     private GamePlayer player1, player2;
     private Button currentActiveButton = null;
-    
+    private int roundCounter;
 
 
 
@@ -145,6 +147,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         acceptRound.gameObject.SetActive(false); // кнопка принятия раунда не активна до нажатия кнопки на панели игрока
         sliderValueText.gameObject.SetActive(false);
         // Устанавливаем обработчик изменения значения слайдера
+       
+        
 
         // Инициализация AudioSource
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -158,6 +162,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         // листнер кнопки подтверждения хода
         acceptRound.onClick.AddListener(OnAcceptRoundButtonClicked);
+
+
+        // счетчик раундов запускаем с 1 раунда
+        roundCounter = 1;
+        roundcountertext.text = roundCounter.ToString();
+
+
     }
 
 
@@ -313,6 +324,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         SendSelectedCharacterInfo(playerNumber, selectedCharacter.id);
 
         characterChoicePanel.SetActive(false);
+        //запускаем таймер
+        StartCoroutine(RoundTimerCoroutine(30f));
 
         if (playerNumber == 1)
         {
@@ -491,49 +504,35 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning("No action button selected!");
             return;
+   
         }
 
-        
-
+        StopAllCoroutines();
+        acceptRound.interactable = false;
         // Получение текущих данных
         string actionButtonName = currentActiveButton.name;
         float sliderValue = powerSliderBar.value;
         int playerNumber = PhotonNetwork.LocalPlayer.UserId == player1Id ? 1 : 2;
 
-        // Блокируем панель управления после подтверждения хода
-        LockControlPanelForPlayer(playerNumber);
-
         // Отправить данные другому игроку через RPC
-        photonView.RPC("SendActionDataRPC", RpcTarget.AllBuffered, playerNumber, actionButtonName, sliderValue);
-
+        photonView.RPC("SendActionDataRPC", RpcTarget.All, playerNumber, actionButtonName, sliderValue);
+        
         Debug.Log($"Action confirmed: {actionButtonName} with power: {sliderValue}");
     }
-    // блокируем панель игрока после нажатия кнопки ОК
-    private void LockControlPanelForPlayer(int playerNumber)
-    {
-        // Блокировка панели управления игрока после подтверждения хода
-        if (playerNumber == 1)
-        {
-            // controlButtonsPanel.SetActive(false); // блокируем панель управления для игрока 1
-            Debug.Log("Control panel locked for Player 1. Timer for Player 1 stopped.");
-        }
-        else if (playerNumber == 2)
-        {
-            // controlButtonsPanel.SetActive(false); // блокируем панель управления для игрока 2
-            Debug.Log("Control panel locked for Player 2. Timer for Player 2 stopped.");
-        }
-    }
+    
+   
 
     // данные отправлены другим игрокам о нажатии кнопки ОКей
     [PunRPC]
     private void SendActionDataRPC(int playerNumber, string actionButtonName, float sliderValue)
     {
         Debug.Log($"Player {playerNumber} selected action: {actionButtonName} with power: {sliderValue}");
-
+        
         // Установка флага для соответствующего игрока
         if (playerNumber == 1)
         {
             player1ActionConfirmed = true;
+
         }
         else if (playerNumber == 2)
         {
@@ -543,16 +542,50 @@ public class GameManager : MonoBehaviourPunCallbacks
         // Проверка, отправили ли оба игрока свои данные
         if (player1ActionConfirmed && player2ActionConfirmed)
         {
+            acceptRound.interactable = true;
+            StartNewRound();
             Debug.Log("Both players have confirmed their actions.");
 
+            // +1 к счетчику раундов
+            roundCounter++;
+            roundcountertext.text = roundCounter.ToString();
             
-
             // Сбрасываем флаги
             player1ActionConfirmed = false;
+            
             player2ActionConfirmed = false;
 
         }
+        
+
     }
 
-    
+    private IEnumerator RoundTimerCoroutine(float duration)
+    {
+        float remainingTime = duration;
+        while (remainingTime > 0)
+        {
+            // Обновляем текст таймера
+            roundTimer.text = Mathf.Ceil(remainingTime).ToString();
+            // Ждем одну секунду
+            yield return new WaitForSeconds(1f);
+
+            // Уменьшаем оставшееся время
+            remainingTime--;
+        }
+
+        // Таймер завершился
+        roundTimer.text = "0";
+        Debug.Log("Round timer has ended!");
+
+    }
+
+    private void StartNewRound()
+    {
+        Debug.Log($"Starting round {roundCounter}!");
+        
+        StartCoroutine(RoundTimerCoroutine(30f)); // Таймер на 30 секунд
+    }
+
+
 }
