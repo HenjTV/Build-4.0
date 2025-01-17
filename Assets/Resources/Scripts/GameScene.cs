@@ -615,7 +615,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
         float damage = 0;
-
+        attacker.currentResource -= attacker.currentPowerBar;
+       
         // Обработка атаки игрока 1
         if (attacker.selectedActionButtonName == "attackButton")
         {
