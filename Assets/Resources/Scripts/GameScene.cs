@@ -28,8 +28,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public Image player1CurrentHp;
     public Image player2CurrentHp;
-    public Slider player1currentResourceSlider;
-    public Slider player2currentResourceSlider;
+    public Image player1currentResourceImage;
+    public Image player2currentResourceImage;
 
     public Button exitLobbyButton;
 
@@ -85,7 +85,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     private GamePlayer player1, player2;
     private Button currentActiveButton = null;
 
-    
+   
+
+
     // Добавляем флаги подтвержденного хода
     private bool player1ActionConfirmed = false;
     private bool player2ActionConfirmed = false;
@@ -254,6 +256,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         const int columns = 5, buttonWidth = 100, buttonHeight = 100, spacing = 10;
 
+       
+
+
         for (int i = 0; i < chars.initialCharacters.Length; i++)
         {
             var character = chars.initialCharacters[i];
@@ -304,13 +309,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         TMP_Text characterNameText = player == player1 ? selectedCharacterNameForPlayer1 : (player == player2 ? selectedCharacterNameForPlayer2 : null);
         Image playerImage = player == player1 ? player1Image : (player == player2 ? player2Image : null);
         TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : (player == player2 ? playerCurrent2HpText : null);
-        Slider resourceSlider = player == player1 ? player1currentResourceSlider : (player == player2 ? player2currentResourceSlider : null);
+        Image ResourceImage = player == player1 ? player1currentResourceImage : (player == player2 ? player2currentResourceImage : null);
 
 
         UpdateStatText(characterNameText, character.name);
         if (playerImage != null) playerImage.sprite = character.avatar;
         UpdateStatText(playerHpText, player.currentHealth.ToString());
-        UpdateSliderColor(resourceSlider, GetResourceColor(player.resourceType));
+        UpdateImageColor(ResourceImage, GetResourceColor(player.resourceType));
 
         UpdateStatPanel(player);
         if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
@@ -381,16 +386,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             sliderValueText.transform.position = handleRect.position + new Vector3(0, Screen.height * 0.05f, 0);            // Смещение над хендлом
         }
     }
-    private void UpdateSliderColor(Slider slider, Color color)
+    private void UpdateImageColor(Image resourceImage, Color color)
     {
-        if (slider == null) return;
-
-        Transform background = slider.transform.Find("Background");
-        if (background != null)
+        if (resourceImage != null)
         {
-            Image backgroundImage = background.GetComponent<Image>();
-            if (backgroundImage != null)
-                backgroundImage.color = color;
+            resourceImage.color = color;
         }
     }
 
