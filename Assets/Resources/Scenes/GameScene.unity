@@ -961,7 +961,7 @@ GameObject:
   - component: {fileID: 356157908}
   - component: {fileID: 356157907}
   m_Layer: 0
-  m_Name: atck
+  m_Name: attackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1647,7 +1647,7 @@ GameObject:
   - component: {fileID: 504330190}
   - component: {fileID: 504330189}
   m_Layer: 0
-  m_Name: def
+  m_Name: defButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2663,7 +2663,7 @@ GameObject:
   - component: {fileID: 763622529}
   - component: {fileID: 763622528}
   m_Layer: 0
-  m_Name: parry
+  m_Name: parryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6491,7 +6491,7 @@ GameObject:
   - component: {fileID: 1914649405}
   - component: {fileID: 1914649404}
   m_Layer: 0
-  m_Name: kick
+  m_Name: kickButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7127,7 +7127,7 @@ GameObject:
   - component: {fileID: 1975402360}
   - component: {fileID: 1975402359}
   m_Layer: 0
-  m_Name: heal
+  m_Name: healButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
