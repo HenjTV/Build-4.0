@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -84,8 +85,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private string player1Id, player2Id;
     private GamePlayer player1, player2;
     private Button currentActiveButton = null;
+    
 
-   
 
 
     // Добавляем флаги подтвержденного хода
@@ -218,9 +219,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         ColorBlock colors = button.colors;
 
         // Установите цвет в зависимости от состояния кнопки
-        colors.normalColor = isActive ? Color.green : Color.white;
-        colors.highlightedColor = isActive ? Color.green : Color.white;
-        colors.pressedColor = isActive ? Color.green : Color.white;
+        colors.normalColor = isActive ? new Color32(147, 147, 147, 255) : Color.white;
+        colors.highlightedColor = isActive ? new Color32(147, 147, 147, 255) : Color.white;
+        colors.pressedColor = isActive ? new Color32(147, 147, 147, 255) : Color.white;
         colors.disabledColor = Color.gray; // Цвет для неактивной кнопки (опционально)
 
         // Обновить цвета кнопки
@@ -527,6 +528,5 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
-
+    
 }
