@@ -338,8 +338,10 @@ public class GameManager : MonoBehaviourPunCallbacks
             
             Debug.Log("Player 2 has selected a character.");
         }
+        // Рассчитываем процент от максимального значения
+       
 
-        
+
     }
 
 
@@ -351,13 +353,25 @@ public class GameManager : MonoBehaviourPunCallbacks
         Image playerImage = player == player1 ? player1Image : (player == player2 ? player2Image : null);
         TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : (player == player2 ? playerCurrent2HpText : null);
         Image ResourceImage = player == player1 ? player1currentResourceImage : (player == player2 ? player2currentResourceImage : null);
-
+        
 
         UpdateStatText(characterNameText, character.name);
         if (playerImage != null) playerImage.sprite = character.avatar;
         UpdateStatText(playerHpText, player.currentHealth.ToString());
         UpdateImageColor(ResourceImage, GetResourceColor(player.resourceType));
-        
+        // Рассчитываем процент от максимального значения
+        float fillAmount = Mathf.Clamp01((float)player.currentHealth / (float)player.character.baseHealth);
+        // Обновляем заполнение изображения
+        var currentHpImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1CurrentHp : player2CurrentHp);
+        currentHpImage.fillAmount = fillAmount;
+        Debug.Log($"{player.currentHealth}/{player.character.baseHealth}");
+
+
+        // для ресурса
+        var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player2currentResourceImage);
+        float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.maxResource);
+        // Обновляем заполнение изображение
+        currentResImage.fillAmount = fillAmount1;
         UpdateStatPanel(player);
         if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
         (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
@@ -377,7 +391,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
         
-
+        
 
     }
     // ОБНОВЛЕНИЕ UI ИГРОКОВ
@@ -655,7 +669,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
         float damage = 0;
-        attacker.currentResource -= attacker.currentPowerBar;
+        
 
         // Обработка атаки игрока
         if (attacker.selectedActionButtonName == "attackButton")
@@ -685,7 +699,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 case "attackButton":
                 case "parryButton":
-                    damage = attacker.currentDefPower * (attacker.currentPowerBar / 100f);
+                    damage = attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
                     defender.currentHealth -= (int)damage; // Наносим урон защитой
                     break;
                 case "defButton":
@@ -702,15 +716,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             switch (defender.selectedActionButtonName)
             {
                 case "attackButton":
-                    damage = attacker.currentParryPower * (attacker.currentPowerBar / 100f) + (defender.currentAttackPower / 2);
+                    damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentAttackPower / 2);
                     defender.currentHealth -= (int)damage;
                     break;
                 case "defButton":
-                    damage = defender.currentDefPower * (defender.currentPowerBar / 100f); // Полностью блокирует парирование
+                    damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f); // Полностью блокирует парирование
                     attacker.currentHealth -= (int)damage; // Наносит урон атакующему
                     break;
                 case "kickButton":
-                    damage = attacker.currentParryPower * (attacker.currentPowerBar / 100f) + (defender.currentKickDamage / 2);
+                    damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentKickDamage / 2);
                     defender.currentHealth -= (int)damage;
                     break;
                 case "parryButton":
@@ -720,7 +734,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
 
-        // Обработка удара игрока
+        // Обработка пинка игрока
         else if (attacker.selectedActionButtonName == "kickButton")
         {
             switch (defender.selectedActionButtonName)
@@ -728,7 +742,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 case "defButton":
                 case "kickButton":
                 case "healButton":
-                    damage = attacker.currentKickDamage * (attacker.currentPowerBar / 100f);
+                    damage = attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
                     defender.currentHealth -= (int)damage;
                     break;
                 case "attackButton":
@@ -741,28 +755,24 @@ public class GameManager : MonoBehaviourPunCallbacks
         // Обработка лечения игрока
         else if (attacker.selectedActionButtonName == "healButton")
         {
-            // Лечение всегда лечит атакующего
-            damage = attacker.currentHealPower * (attacker.currentPowerBar / 100f);
-            attacker.currentHealth += (int)damage; // Лечение атакующего
-
+            // Если защитник использует "kickButton", лечение атакующего не происходит
             if (defender.selectedActionButtonName == "kickButton")
             {
-                // Если защита от пинка, отменяем лечение (или применяем уменьшенное лечение)
-                return; // Лечение не происходит, если атакующий лечит против пинка
+                return;
             }
-            else if (defender.selectedActionButtonName == "healButton")
+
+            // Лечение всегда лечит атакующего
+            damage = attacker.currentHealPower + (attacker.currentHealPower * attacker.currentPowerBar / 100f);
+            attacker.currentHealth += (int)damage; // Лечение атакующего
+
+            // Если защитник также использует "healButton", лечим защитника
+            if (defender.selectedActionButtonName == "healButton")
             {
-                // Лечение защитника, если оба используют лечение
-                damage = defender.currentHealPower * (defender.currentPowerBar / 100f);
+                damage = defender.currentHealPower + (defender.currentHealPower * defender.currentPowerBar / 100f);
                 defender.currentHealth += (int)damage; // Лечение защитника
             }
         }
     }
-
-
-
-
-
 
 
 }
