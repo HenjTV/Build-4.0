@@ -413,8 +413,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
         // для ресурса
-        var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player1currentResourceImage);
-        float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.baseResource);
+        var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player2currentResourceImage);
+        float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.maxResource);
         // Обновляем заполнение изображение
         currentResImage.fillAmount = fillAmount1;
         
@@ -650,75 +650,53 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     // GAMELOGIC
 
-    
+
 
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
         float damage = 0;
         attacker.currentResource -= attacker.currentPowerBar;
-       
-        // Обработка атаки игрока 1
+
+        // Обработка атаки игрока
         if (attacker.selectedActionButtonName == "attackButton")
         {
             switch (defender.selectedActionButtonName)
             {
                 case "attackButton":
-                    damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-                    defender.currentHealth -= (int)damage;
-                    break;
-
-                case "defButton":
-                    // Ничего не происходит
-                    break;
-
-                case "parryButton":
-                    damage = (attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower) / 2;
-                    defender.currentHealth -= (int)damage;
-                    break;
-
                 case "kickButton":
-                    damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-                    defender.currentHealth -= (int)damage;
-                    break;
-
                 case "healButton":
                     damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
+                    defender.currentHealth -= (int)damage;
+                    break;
+                case "defButton":
+                    // Атака блокируется, ничего не происходит
+                    break;
+                case "parryButton":
+                    damage = (attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower) / 2;
                     defender.currentHealth -= (int)damage;
                     break;
             }
         }
 
-        // Обработка защиты игрока 1
+        // Обработка защиты игрока
         else if (attacker.selectedActionButtonName == "defButton")
         {
             switch (defender.selectedActionButtonName)
             {
                 case "attackButton":
-                    damage = attacker.currentDefPower * (attacker.currentPowerBar / 100f);
-                    defender.currentHealth -= (int)damage;
-                    break;
-
-                case "defButton":
-                    // Ничего не происходит
-                    break;
-
                 case "parryButton":
                     damage = attacker.currentDefPower * (attacker.currentPowerBar / 100f);
-                    defender.currentHealth -= (int)damage;
+                    defender.currentHealth -= (int)damage; // Наносим урон защитой
                     break;
-
+                case "defButton":
                 case "kickButton":
-                    // Ничего не происходит
-                    break;
-
                 case "healButton":
-                    damage = attacker.currentHealPower * (attacker.currentHealPower / 100f);
-                    defender.currentHealth += (int)damage;
+                    // Ничего не происходит
                     break;
             }
         }
 
-        // Обработка парирования игрока 1
+        // Обработка парирования игрока
         else if (attacker.selectedActionButtonName == "parryButton")
         {
             switch (defender.selectedActionButtonName)
@@ -727,93 +705,63 @@ public class GameManager : MonoBehaviourPunCallbacks
                     damage = attacker.currentParryPower * (attacker.currentPowerBar / 100f) + (defender.currentAttackPower / 2);
                     defender.currentHealth -= (int)damage;
                     break;
-
                 case "defButton":
-                    // Ничего не происходит
+                    damage = defender.currentDefPower * (defender.currentPowerBar / 100f); // Полностью блокирует парирование
+                    attacker.currentHealth -= (int)damage; // Наносит урон атакующему
                     break;
-
-                case "parryButton":
-                    // Ничего не происходит
-                    break;
-
                 case "kickButton":
                     damage = attacker.currentParryPower * (attacker.currentPowerBar / 100f) + (defender.currentKickDamage / 2);
                     defender.currentHealth -= (int)damage;
                     break;
-
+                case "parryButton":
                 case "healButton":
-                    damage = attacker.currentHealPower * (attacker.currentHealPower / 100f);
-                    defender.currentHealth -= (int)damage;
+                    // Ничего не происходит
                     break;
             }
         }
 
-        // Обработка удара игрока 1
+        // Обработка удара игрока
         else if (attacker.selectedActionButtonName == "kickButton")
         {
             switch (defender.selectedActionButtonName)
             {
-                case "attackButton":
-                    // Ничего не происходит
-                    break;
-
                 case "defButton":
-                    damage = attacker.currentKickDamage * (attacker.currentKickDamage / 100f);
+                case "kickButton":
+                case "healButton":
+                    damage = attacker.currentKickDamage * (attacker.currentPowerBar / 100f);
                     defender.currentHealth -= (int)damage;
                     break;
-
+                case "attackButton":
                 case "parryButton":
                     // Ничего не происходит
-                    break;
-
-                case "kickButton":
-                    damage = attacker.currentKickDamage * (attacker.currentKickDamage / 100f);
-                    defender.currentHealth -= (int)damage;
-                    break;
-
-                case "healButton":
-                    damage = attacker.currentKickDamage * (attacker.currentKickDamage / 100f);
-                    defender.currentHealth -= (int)damage;
                     break;
             }
         }
 
-        // Обработка исцеления игрока 1
+        // Обработка лечения игрока
         else if (attacker.selectedActionButtonName == "healButton")
         {
-            switch (defender.selectedActionButtonName)
+            // Лечение всегда лечит атакующего
+            damage = attacker.currentHealPower * (attacker.currentPowerBar / 100f);
+            attacker.currentHealth += (int)damage; // Лечение атакующего
+
+            if (defender.selectedActionButtonName == "kickButton")
             {
-                case "attackButton":
-                    // Ничего не происходит
-                    break;
-
-                case "defButton":
-                    // Ничего не происходит
-                    break;
-
-                case "parryButton":
-                    // Ничего не происходит
-                    break;
-
-                case "kickButton":
-                    // Ничего не происходит
-                    break;
-
-                case "healButton":
-                    damage = attacker.currentHealPower * (attacker.currentHealPower / 100f);
-                    defender.currentHealth += (int)damage;
-                    break;
+                // Если защита от пинка, отменяем лечение (или применяем уменьшенное лечение)
+                return; // Лечение не происходит, если атакующий лечит против пинка
+            }
+            else if (defender.selectedActionButtonName == "healButton")
+            {
+                // Лечение защитника, если оба используют лечение
+                damage = defender.currentHealPower * (defender.currentPowerBar / 100f);
+                defender.currentHealth += (int)damage; // Лечение защитника
             }
         }
-       
-
-
     }
 
-    public void UpdateHealthBar(float currentHealth)
-    {
-       
-    }
+
+
+
 
 
 
