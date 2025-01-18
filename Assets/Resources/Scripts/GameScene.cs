@@ -9,7 +9,7 @@ using static CharacterManager;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     [Header("UI References")]
-    public TMP_Text roundcountertext;
+    public TMP_Text roundCounterText;
     public TMP_Text player1NicknameText;
     public TMP_Text player2NicknameText;
     public Image player1Image;
@@ -86,22 +86,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     [System.Serializable]
     public class GamePlayer
     {
-        public string Id;
-        public string selectedActionButtonName;
-        public int currentAttackPower;
-        public int currentDefPower;
-        public int currentParryPower;
-        public int currentKickDamage;
-        public int currentBreak;
-        public int currentHealPower;
-        public int currentPoisons;
-        public int currentHealth;
-        public int currentResource;
-        public int currentPowerBar;
-        public int maxPowerBar;
-        public int maxResource;
-        public int currentSuperAbilityState;
-        public int maxHealth;
+        public string Id, selectedActionButtonName;
+        public int currentAttackPower, currentDefPower, currentParryPower, currentKickDamage, currentBreak;
+        public int currentHealPower, currentPoisons, currentHealth, currentResource, currentPowerBar;
+        public int maxPowerBar, maxResource, currentSuperAbilityState, maxHealth;
         public ResourceType resourceType;
         public CharacterManager.Character character;
 
@@ -132,10 +120,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         InitializePlayers();
-        InitializeUI();
+        exitLobbyButton.onClick.AddListener(OnExitLobbyButtonClicked);
+        UpdatePlayerNicknames();
+        CreateCharacterButtons();
+        AssignButtonListeners();
+        InitializeUIElements();
         InitializeAudioSource();
-        InitializeButtonListeners();
-        InitializeRoundCounter();
+
+        roundCounter = 1;
+        roundCounterText.text = roundCounter.ToString();
     }
 
     private void InitializePlayers()
@@ -146,11 +139,18 @@ public class GameManager : MonoBehaviourPunCallbacks
         player2 = new GamePlayer(player2Id);
     }
 
-    private void InitializeUI()
+    private void AssignButtonListeners()
     {
-        exitLobbyButton.onClick.AddListener(OnExitLobbyButtonClicked);
-        UpdatePlayerNicknames();
-        CreateCharacterButtons();
+        Button[] buttons = { attackButton, defButton, parryButton, kickButton, healButton, superAbility };
+        foreach (var button in buttons)
+        {
+            if (button != null)
+                button.onClick.AddListener(() => OnButtonPressed(button));
+        }
+    }
+
+    private void InitializeUIElements()
+    {
         powerSliderBar.gameObject.SetActive(false);
         acceptRound.gameObject.SetActive(false);
         sliderValueText.gameObject.SetActive(false);
@@ -166,20 +166,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         audioSource.clip = timerTickSound;
     }
 
-    private void InitializeButtonListeners()
+    private void OnDestroy()
     {
         Button[] buttons = { attackButton, defButton, parryButton, kickButton, healButton, superAbility };
         foreach (var button in buttons)
         {
             if (button != null)
-                button.onClick.AddListener(() => OnButtonPressed(button));
+                button.onClick.RemoveAllListeners();
         }
-    }
-
-    private void InitializeRoundCounter()
-    {
-        roundCounter = 1;
-        roundcountertext.text = roundCounter.ToString();
     }
 
     private void OnButtonPressed(Button pressedButton)
@@ -188,7 +182,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             SetButtonState(currentActiveButton, false);
             currentActiveButton = null;
-            SetUIElementsActive(false);
+            powerSliderBar.gameObject.SetActive(false);
+            acceptRound.gameObject.SetActive(false);
             Debug.Log($"Button {pressedButton.name} was unpressed.");
             return;
         }
@@ -200,15 +195,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         SetButtonState(pressedButton, true);
         currentActiveButton = pressedButton;
-        SetUIElementsActive(true);
+        powerSliderBar.gameObject.SetActive(true);
+        acceptRound.gameObject.SetActive(true);
+        sliderValueText.gameObject.SetActive(true);
         Debug.Log($"Current Active Button: {pressedButton.name}");
-    }
-
-    private void SetUIElementsActive(bool isActive)
-    {
-        powerSliderBar.gameObject.SetActive(isActive);
-        acceptRound.gameObject.SetActive(isActive);
-        sliderValueText.gameObject.SetActive(isActive);
     }
 
     private void SetButtonState(Button button, bool isActive)
@@ -222,77 +212,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         button.GetComponent<Image>().color = colors.normalColor;
     }
 
-    private void OnDestroy()
-    {
-        Button[] buttons = { attackButton, defButton, parryButton, kickButton, healButton, superAbility };
-        foreach (var button in buttons)
-        {
-            if (button != null)
-                button.onClick.RemoveAllListeners();
-        }
-    }
-
-    private void UpdatePlayerUI(GamePlayer player, CharacterManager.Character character)
-    {
-        player.SetCharacter(character);
-
-        TMP_Text characterNameText = player == player1 ? selectedCharacterNameForPlayer1 : selectedCharacterNameForPlayer2;
-        Image playerImage = player == player1 ? player1Image : player2Image;
-        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : playerCurrent2HpText;
-        Image resourceImage = player == player1 ? player1currentResourceImage : player2currentResourceImage;
-
-        UpdateStatText(characterNameText, character.name);
-        if (playerImage != null) playerImage.sprite = character.avatar;
-        UpdateStatText(playerHpText, player.currentHealth.ToString());
-        UpdateImageColor(resourceImage, GetResourceColor(player.resourceType));
-        UpdateImageFill(player1CurrentHp, player.currentHealth, player.character.baseHealth);
-        UpdateImageFill(player2CurrentHp, player.currentHealth, player.character.baseHealth);
-
-        UpdateStatPanel(player);
-        UpdatePowerSlider(player);
-    }
-
-    private void UpdatePlayerStats(GamePlayer player)
-    {
-        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : playerCurrent2HpText;
-        UpdateStatText(playerHpText, player.currentHealth.ToString());
-        UpdateStatPanel(player);
-        UpdatePowerSlider(player);
-        UpdateImageFill(player1CurrentHp, player.currentHealth, player.character.baseHealth);
-        UpdateImageFill(player2CurrentHp, player.currentHealth, player.character.baseHealth);
-        UpdateImageFill(player1currentResourceImage, player.currentResource, player.character.maxResource);
-        UpdateImageFill(player2currentResourceImage, player.currentResource, player.character.maxResource);
-    }
-
-    private void UpdatePowerSlider(GamePlayer player)
-    {
-        if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
-            (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
-        {
-            if (powerSliderBar != null)
-            {
-                powerSliderBar.maxValue = Mathf.Min(player.currentResource, player.maxPowerBar);
-                powerSliderBar.value = player.currentPowerBar;
-            }
-        }
-    }
-
-    private void UpdateImageFill(Image image, int currentValue, int maxValue)
-    {
-        if (image != null)
-        {
-            float fillAmount = Mathf.Clamp01((float)currentValue / maxValue);
-            image.fillAmount = fillAmount;
-        }
-    }
-
     private void CreateCharacterButtons()
     {
         const int buttonWidth = 100, buttonHeight = 100, spacing = 10;
-
         float panelWidth = Screen.width - 2 * spacing;
         int columns = Mathf.FloorToInt(panelWidth / (buttonWidth + spacing));
-
         float panelHeight = Screen.height - 2 * spacing;
         int rows = Mathf.FloorToInt(panelHeight / (buttonHeight + spacing));
 
@@ -315,11 +239,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             RectTransform rect = button.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
             int row = i / columns, column = i % columns;
-            rect.anchoredPosition = new Vector2(
-                column * (buttonWidth + spacing) + spacing,
-                -(row * (buttonHeight + spacing)) - spacing
-            );
-
+            rect.anchoredPosition = new Vector2(column * (buttonWidth + spacing) + spacing, -(row * (buttonHeight + spacing)) - spacing);
             button.onClick.AddListener(() => OnCharacterButtonClicked(character));
 
             if (row >= rows)
@@ -340,6 +260,60 @@ public class GameManager : MonoBehaviourPunCallbacks
         StartCoroutine(RoundTimerCoroutine(30f));
 
         Debug.Log($"Player {playerNumber} has selected a character.");
+    }
+
+    private void UpdatePlayerUI(GamePlayer player, CharacterManager.Character character)
+    {
+        player.SetCharacter(character);
+
+        TMP_Text characterNameText = player == player1 ? selectedCharacterNameForPlayer1 : selectedCharacterNameForPlayer2;
+        Image playerImage = player == player1 ? player1Image : player2Image;
+        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : playerCurrent2HpText;
+        Image resourceImage = player == player1 ? player1currentResourceImage : player2currentResourceImage;
+
+        UpdateText(characterNameText, character.name);
+        if (playerImage != null) playerImage.sprite = character.avatar;
+        UpdateText(playerHpText, player.currentHealth.ToString());
+        UpdateImageColor(resourceImage, GetResourceColor(player.resourceType));
+
+        float healthFillAmount = Mathf.Clamp01((float)player.currentHealth / player.character.baseHealth);
+        Image currentHpImage = player == player1 ? player1CurrentHp : player2CurrentHp;
+        UpdateImageFill(currentHpImage, healthFillAmount);
+
+        float resourceFillAmount = Mathf.Clamp01((float)player.currentResource / player.character.maxResource);
+        UpdateImageFill(resourceImage, resourceFillAmount);
+
+        UpdateStatPanel(player);
+        UpdatePowerSlider(player);
+    }
+
+    private void UpdatePlayerStats(GamePlayer player)
+    {
+        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : playerCurrent2HpText;
+        UpdateText(playerHpText, player.currentHealth.ToString());
+        UpdateStatPanel(player);
+        UpdatePowerSlider(player);
+
+        float healthFillAmount = Mathf.Clamp01((float)player.currentHealth / player.character.baseHealth);
+        Image currentHpImage = player == player1 ? player1CurrentHp : player2CurrentHp;
+        UpdateImageFill(currentHpImage, healthFillAmount);
+
+        float resourceFillAmount = Mathf.Clamp01((float)player.currentResource / player.character.maxResource);
+        Image currentResourceImage = player == player1 ? player1currentResourceImage : player2currentResourceImage;
+        UpdateImageFill(currentResourceImage, resourceFillAmount);
+    }
+
+    private void UpdatePowerSlider(GamePlayer player)
+    {
+        if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
+            (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
+        {
+            if (powerSliderBar != null)
+            {
+                powerSliderBar.maxValue = Mathf.Min(player.currentResource, player.maxPowerBar);
+                powerSliderBar.value = player.currentPowerBar;
+            }
+        }
     }
 
     private void UpdateStatPanel(GamePlayer player)
@@ -369,15 +343,33 @@ public class GameManager : MonoBehaviourPunCallbacks
             statPanel.SetActive(true);
             for (int i = 0; i < statTexts.Length; i++)
             {
-                UpdateStatText(statTexts[i], statValues[i].ToString());
+                UpdateText(statTexts[i], statValues[i].ToString());
             }
         }
     }
 
-    private void UpdateStatText(TMP_Text textComponent, string value)
+    private void UpdateText(TMP_Text textComponent, string value)
     {
         if (textComponent != null)
+        {
             textComponent.text = value;
+        }
+    }
+
+    private void UpdateImageFill(Image imageComponent, float fillAmount)
+    {
+        if (imageComponent != null)
+        {
+            imageComponent.fillAmount = fillAmount;
+        }
+    }
+
+    private void UpdateImageColor(Image resourceImage, Color color)
+    {
+        if (resourceImage != null)
+        {
+            resourceImage.color = color;
+        }
     }
 
     private void OnSliderValueChanged(float value)
@@ -394,14 +386,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             sliderValueText.text = value.ToString();
             RectTransform handleRect = powerSliderBar.handleRect;
             sliderValueText.transform.position = handleRect.position + new Vector3(0, Screen.height * 0.05f, 0);
-        }
-    }
-
-    private void UpdateImageColor(Image resourceImage, Color color)
-    {
-        if (resourceImage != null)
-        {
-            resourceImage.color = color;
         }
     }
 
@@ -482,7 +466,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         int playerNumber = PhotonNetwork.LocalPlayer.UserId == player1Id ? 1 : 2;
 
         photonView.RPC("SendActionDataRPC", RpcTarget.All, playerNumber, actionButtonName, sliderValue);
-
         Debug.Log($"Action confirmed: {actionButtonName} with power: {sliderValue}");
     }
 
@@ -517,7 +500,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             Debug.Log("Both players have confirmed their actions.");
             roundCounter++;
-            roundcountertext.text = roundCounter.ToString();
+            roundCounterText.text = roundCounter.ToString();
             player1ActionConfirmed = false;
             player2ActionConfirmed = false;
         }
@@ -545,28 +528,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = 0;
         attacker.currentResource -= attacker.currentPowerBar;
-
-        switch (attacker.selectedActionButtonName)
-        {
-            case "attackButton":
-                damage = CalculateAttackDamage(attacker, defender);
-                break;
-            case "defButton":
-                damage = CalculateDefendDamage(attacker, defender);
-                break;
-            case "parryButton":
-                damage = CalculateParryDamage(attacker, defender);
-                break;
-            case "kickButton":
-                damage = CalculateKickDamage(attacker, defender);
-                break;
-            case "healButton":
-                HealPlayer(attacker);
-                break;
-        }
-
+        float damage = CalculateDamage(attacker, defender);
         ApplyDamage(defender, damage);
 
         if (attacker.selectedActionButtonName == "healButton")
