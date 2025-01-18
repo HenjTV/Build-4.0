@@ -367,11 +367,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log($"{player.currentHealth}/{player.character.baseHealth}");
 
 
+     
+        
         // для ресурса
-        var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player2currentResourceImage);
-        float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.maxResource);
-        // Обновляем заполнение изображение
-        currentResImage.fillAmount = fillAmount1;
+        // var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player2currentResourceImage);
+        // float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.maxResource);
+        // currentResImage.fillAmount = fillAmount1;
+
+
         UpdateStatPanel(player);
         if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
         (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
@@ -669,8 +672,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
         float damage = 0;
-        
-
+        attacker.currentResource -= attacker.currentPowerBar;
         // Обработка атаки игрока
         if (attacker.selectedActionButtonName == "attackButton")
         {
@@ -680,14 +682,14 @@ public class GameManager : MonoBehaviourPunCallbacks
                 case "kickButton":
                 case "healButton":
                     damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-                    defender.currentHealth -= (int)damage;
+                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
                 case "defButton":
                     // Атака блокируется, ничего не происходит
                     break;
                 case "parryButton":
                     damage = (attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower) / 2;
-                    defender.currentHealth -= (int)damage;
+                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
             }
         }
@@ -700,7 +702,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 case "attackButton":
                 case "parryButton":
                     damage = attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
-                    defender.currentHealth -= (int)damage; // Наносим урон защитой
+                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
                 case "defButton":
                 case "kickButton":
@@ -717,15 +719,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 case "attackButton":
                     damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentAttackPower / 2);
-                    defender.currentHealth -= (int)damage;
+                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
                 case "defButton":
-                    damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f); // Полностью блокирует парирование
-                    attacker.currentHealth -= (int)damage; // Наносит урон атакующему
+                    damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f);
+                    attacker.currentHealth = Mathf.Clamp(attacker.currentHealth - (int)damage, 0, attacker.maxHealth);
                     break;
                 case "kickButton":
                     damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentKickDamage / 2);
-                    defender.currentHealth -= (int)damage;
+                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
                 case "parryButton":
                 case "healButton":
@@ -743,7 +745,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 case "kickButton":
                 case "healButton":
                     damage = attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
-                    defender.currentHealth -= (int)damage;
+                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
                 case "attackButton":
                 case "parryButton":
@@ -763,16 +765,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Лечение всегда лечит атакующего
             damage = attacker.currentHealPower + (attacker.currentHealPower * attacker.currentPowerBar / 100f);
-            attacker.currentHealth += (int)damage; // Лечение атакующего
+            attacker.currentHealth = Mathf.Clamp(attacker.currentHealth + (int)damage, 0, attacker.maxHealth);
 
             // Если защитник также использует "healButton", лечим защитника
             if (defender.selectedActionButtonName == "healButton")
             {
                 damage = defender.currentHealPower + (defender.currentHealPower * defender.currentPowerBar / 100f);
-                defender.currentHealth += (int)damage; // Лечение защитника
+                defender.currentHealth = Mathf.Clamp(defender.currentHealth + (int)damage, 0, defender.maxHealth);
             }
         }
     }
+
 
 
 }
