@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         public string Id, selectedActionButtonName;
         public int currentAttackPower, currentDefPower, currentParryPower, currentKickDamage, currentBreak;
         public int currentHealPower, currentPoisons, currentHealth, currentResource, currentPowerBar;
-        public int maxPowerBar, maxResource, currentSuperAbilityState;
+        public int maxPowerBar, maxResource, currentSuperAbilityState, maxHealth;
         public ResourceType resourceType;
         public CharacterManager.Character character;
         
@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             currentBreak = character.kickCooldown;
             currentPoisons = character.healCharges;
             currentHealth = character.baseHealth;
+            maxHealth = character.baseHealth;
             currentResource = character.baseResource;
             maxResource = character.maxResource;
             maxPowerBar = character.booster;
@@ -148,7 +149,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         acceptRound.gameObject.SetActive(false); // кнопка принятия раунда не активна до нажатия кнопки на панели игрока
         sliderValueText.gameObject.SetActive(false);
         // Устанавливаем обработчик изменения значения слайдера
-       
         
 
         // Инициализация AudioSource
@@ -357,7 +357,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (playerImage != null) playerImage.sprite = character.avatar;
         UpdateStatText(playerHpText, player.currentHealth.ToString());
         UpdateImageColor(ResourceImage, GetResourceColor(player.resourceType));
-
+        
         UpdateStatPanel(player);
         if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
         (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
@@ -376,10 +376,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                 
             }
         }
+        
 
 
     }
-
+    // ОБНОВЛЕНИЕ UI ИГРОКОВ
     private void UpdatePlayerStats(GamePlayer player)
     {
         TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : (player == player2 ? playerCurrent2HpText : null);
@@ -387,6 +388,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         UpdateStatPanel(player);
         if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
         (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
+        
         {
             if (powerSliderBar != null) // установка размера бустера
             {
@@ -402,7 +404,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             }
         }
+        // Рассчитываем процент от максимального значения
+        float fillAmount = Mathf.Clamp01(player.currentHealth / player.character.baseHealth);
 
+
+        // Обновляем заполнение изображения
+               var currentHpImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1CurrentHp : player2CurrentHp);
+        currentHpImage.fillAmount = fillAmount;
+        Debug.Log($"{player.currentHealth}/{player.character.baseHealth}");
     }
 
     private void UpdateStatPanel(GamePlayer player)
@@ -793,6 +802,11 @@ public class GameManager : MonoBehaviourPunCallbacks
        
 
 
+    }
+
+    public void UpdateHealthBar(float currentHealth)
+    {
+       
     }
 
 
