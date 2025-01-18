@@ -757,22 +757,20 @@ public class GameManager : MonoBehaviourPunCallbacks
         // ќбработка лечени€ игрока
         else if (attacker.selectedActionButtonName == "healButton")
         {
-            // ≈сли защитник использует "kickButton", лечение атакующего не происходит
-            if (defender.selectedActionButtonName == "kickButton")
-            {
-                return;
-            }
 
             // Ћечение всегда лечит атакующего
             damage = attacker.currentHealPower + (attacker.currentHealPower * attacker.currentPowerBar / 100f);
             attacker.currentHealth = Mathf.Clamp(attacker.currentHealth + (int)damage, 0, attacker.maxHealth);
 
-            // ≈сли защитник также использует "healButton", лечим защитника
-            if (defender.selectedActionButtonName == "healButton")
+
+            // ≈сли защитник использует "kickButton", лечение атакующего не происходит
+            if (defender.selectedActionButtonName == "kickButton")
             {
-                damage = defender.currentHealPower + (defender.currentHealPower * defender.currentPowerBar / 100f);
-                defender.currentHealth = Mathf.Clamp(defender.currentHealth + (int)damage, 0, defender.maxHealth);
+                return;
             }
+            
+            
+
         }
     }
 
