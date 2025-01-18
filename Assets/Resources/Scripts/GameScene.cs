@@ -559,7 +559,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         return attacker.selectedActionButtonName switch
         {
             "attackButton" => CalculateAttackDamage(attacker, defender),
-            "defButton" => CalculateDefendDamage(attacker, defender),
+            "defButton" => 0, // «ащита не наносит урон
             "parryButton" => CalculateParryDamage(attacker, defender),
             "kickButton" => CalculateKickDamage(attacker, defender),
             _ => 0
@@ -569,32 +569,45 @@ public class GameManager : MonoBehaviourPunCallbacks
     private float CalculateAttackDamage(GamePlayer attacker, GamePlayer defender)
     {
         float damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-        if (defender.selectedActionButtonName == "parryButton")
-            damage /= 2;
+        // ≈сли защитник использует защиту, урон блокируетс€, а атакующий получает урон от показател€ защиты защитника
+        if (defender.selectedActionButtonName == "defButton")
+        {
+            ApplyDamage(attacker, defender.currentDefPower);
+            return 0;
+        }
         return damage;
     }
 
     private float CalculateDefendDamage(GamePlayer attacker, GamePlayer defender)
     {
-        if (defender.selectedActionButtonName == "attackButton" || defender.selectedActionButtonName == "parryButton")
-            return attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
-        return 0;
+        // «ащита блокирует весь урон и наносит урон атакующему от показател€ защиты защитника
+        if (defender.selectedActionButtonName == "attackButton")
+        {
+            ApplyDamage(defender, attacker.currentDefPower);
+            return 0;
+        }
+        return attacker.currentDefPower;
     }
 
     private float CalculateParryDamage(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f);
-        if (defender.selectedActionButtonName == "attackButton")
-            damage += defender.currentAttackPower / 2;
-        else if (defender.selectedActionButtonName == "kickButton")
-            damage += defender.currentKickDamage / 2;
-        else if (defender.selectedActionButtonName == "defButton")
+        // ”рон, который наносит парирующий
+        float defenderDamage = defender.currentParryPower + (defender.currentParryPower * defender.currentPowerBar / 100f);
+        // ”рон, который наносит атакующий
+        float attackerDamage = 0;
+
+        if (attacker.selectedActionButtonName == "attackButton")
         {
-            damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f);
-            ApplyDamage(attacker, damage);
-            return 0;
+            // јтакующий получает 50% от своего урона
+            attackerDamage = attacker.currentAttackPower / 2;
+            // ѕарирующий блокирует и наносит 50% от урона атакующего
+            defenderDamage = attacker.currentAttackPower / 2;
         }
-        return damage;
+
+        // ѕрименить урон к атакующему
+        ApplyDamage(attacker, attackerDamage);
+
+        return defenderDamage;
     }
 
     private float CalculateKickDamage(GamePlayer attacker, GamePlayer defender)
