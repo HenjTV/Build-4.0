@@ -487,11 +487,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             player2.currentPowerBar = (int)sliderValue;
         }
 
+        // Проверяем, подтвердили ли оба игрока свои действия
         if (player1ActionConfirmed && player2ActionConfirmed)
         {
             acceptRound.interactable = true;
-            StartNewRound();
 
+            // Обработка действий игроков
             ProcessTurn(player1, player2);
             ProcessTurn(player2, player1);
 
@@ -499,10 +500,17 @@ public class GameManager : MonoBehaviourPunCallbacks
             UpdatePlayerStats(player2);
 
             Debug.Log("Both players have confirmed their actions.");
+
+            // Обновляем счетчик раундов
             roundCounter++;
             roundCounterText.text = roundCounter.ToString();
+
+            // Сбрасываем флаги подтверждения действий
             player1ActionConfirmed = false;
             player2ActionConfirmed = false;
+
+            // Начинаем новый раунд
+            StartNewRound();
         }
     }
 
@@ -532,9 +540,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         float damage = CalculateDamage(attacker, defender);
         ApplyDamage(defender, damage);
 
-        if (attacker.selectedActionButtonName == "healButton")
+        // Если один игрок использует лечение, а другой пинок, то лечение не применяется
+        if (!((attacker.selectedActionButtonName == "healButton" && defender.selectedActionButtonName == "kickButton") ||
+              (attacker.selectedActionButtonName == "kickButton" && defender.selectedActionButtonName == "healButton")))
         {
-            HealPlayer(attacker);
+            if (attacker.selectedActionButtonName == "healButton")
+            {
+                HealPlayer(attacker);
+            }
         }
 
         UpdatePlayerStats(attacker);
