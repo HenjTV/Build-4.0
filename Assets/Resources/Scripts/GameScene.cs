@@ -528,77 +528,65 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = 0;
         attacker.currentResource -= attacker.currentPowerBar;
+        float damage = CalculateDamage(attacker, defender);
+        ApplyDamage(defender, damage);
 
-        switch (attacker.selectedActionButtonName)
+        if (attacker.selectedActionButtonName == "healButton")
         {
-            case "attackButton":
-                damage = CalculateAttackDamage(attacker, defender);
-                UpdateCombatLog($"{attacker.character.name} атаковал и нанес {damage} урона {defender.character.name}");
-                break;
-            case "defButton":
-                damage = CalculateDefendDamage(attacker, defender);
-                UpdateCombatLog($"{attacker.character.name} защищался и нанес {damage} урона {defender.character.name}");
-                break;
-            case "parryButton":
-                damage = CalculateParryDamage(attacker, defender);
-                UpdateCombatLog($"{attacker.character.name} парировал и нанес {damage} урона {defender.character.name}");
-                break;
-            case "kickButton":
-                damage = CalculateKickDamage(attacker, defender);
-                UpdateCombatLog($"{attacker.character.name} ударил ногой и нанес {damage} урона {defender.character.name}");
-                break;
-            case "healButton":
-                HealPlayer(attacker);
-                UpdateCombatLog($"{attacker.character.name} исцелился на {attacker.currentHealPower + (attacker.currentHealPower * attacker.currentPowerBar / 100f)} здоровья");
-                break;
-            case "none":
-                UpdateCombatLog($"{attacker.character.name} ничего не сделал.");
-                break;
+            HealPlayer(attacker);
         }
 
-        if (damage > 0)
-        {
-            ApplyDamage(defender, damage);
-            UpdateCombatLog($"{defender.character.name} получил {damage} урона");
-        }
+        UpdatePlayerStats(attacker);
+        UpdatePlayerStats(defender);
     }
 
-    // Методы расчета урона
+    private float CalculateDamage(GamePlayer attacker, GamePlayer defender)
+    {
+        return attacker.selectedActionButtonName switch
+        {
+            "attackButton" => CalculateAttackDamage(attacker, defender),
+            "defButton" => CalculateDefendDamage(attacker, defender),
+            "parryButton" => CalculateParryDamage(attacker, defender),
+            "kickButton" => CalculateKickDamage(attacker, defender),
+            _ => 0
+        };
+    }
+
     private float CalculateAttackDamage(GamePlayer attacker, GamePlayer defender)
     {
         float damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-        defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
+        if (defender.selectedActionButtonName == "parryButton")
+            damage /= 2;
         return damage;
     }
 
     private float CalculateDefendDamage(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
-        defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-        return damage;
+        if (defender.selectedActionButtonName == "attackButton" || defender.selectedActionButtonName == "parryButton")
+            return attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
+        return 0;
     }
 
     private float CalculateParryDamage(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentAttackPower / 2);
-        defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
+        float damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f);
+        if (defender.selectedActionButtonName == "attackButton")
+            damage += defender.currentAttackPower / 2;
+        else if (defender.selectedActionButtonName == "kickButton")
+            damage += defender.currentKickDamage / 2;
+        else if (defender.selectedActionButtonName == "defButton")
+        {
+            damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f);
+            ApplyDamage(attacker, damage);
+            return 0;
+        }
         return damage;
     }
 
     private float CalculateKickDamage(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
-        defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-        return damage;
-    }
-
-    private void HealPlayer(GamePlayer player)
-    {
-        float healAmount = player.currentHealPower + (player.currentHealPower * player.currentPowerBar / 100f);
-        player.currentHealth = Mathf.Clamp(player.currentHealth + (int)healAmount, 0, player.maxHealth);
-        UpdateCombatLog($"{player.character.name} исцелился на {healAmount} здоровья.");
+        return attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
     }
 
     private void ApplyDamage(GamePlayer player, float damage)
@@ -606,8 +594,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         player.currentHealth = Mathf.Clamp(player.currentHealth - (int)damage, 0, player.maxHealth);
     }
 
-    private void UpdateCombatLog(string message)
+    private void HealPlayer(GamePlayer player)
     {
-        combatLog.text += message + "\n";
+        float healAmount = player.currentHealPower + (player.currentHealPower * player.currentPowerBar / 100f);
+        player.currentHealth = Mathf.Clamp(player.currentHealth + (int)healAmount, 0, player.maxHealth);
     }
 }
