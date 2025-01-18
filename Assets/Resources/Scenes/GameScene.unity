@@ -6753,7 +6753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b02fb0de785fc294d861ea34049fa6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roundcountertext: {fileID: 1134915125}
+  roundCounterText: {fileID: 1134915125}
   player1NicknameText: {fileID: 1245423025}
   player2NicknameText: {fileID: 105936560}
   player1Image: {fileID: 1477733400}

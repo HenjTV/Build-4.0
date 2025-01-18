@@ -8,36 +8,27 @@ using static CharacterManager;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-
-
     [Header("UI References")]
-    public TMP_Text roundcountertext;
-
+    public TMP_Text roundCounterText;
     public TMP_Text player1NicknameText;
     public TMP_Text player2NicknameText;
-    
     public Image player1Image;
     public Image player2Image;
     public GameObject characterChoicePanel;
     public GameObject controlButtonsPanel;
-
     public TMP_Text selectedCharacterNameForPlayer1;
     public TMP_Text selectedCharacterNameForPlayer2;
-
     public TMP_Text playerCurrent1HpText;
     public TMP_Text playerCurrent2HpText;
     public TMP_Text roundTimer;
     public TMP_Text combatLog;
-
     public Image player1CurrentHp;
     public Image player2CurrentHp;
     public Image player1currentResourceImage;
     public Image player2currentResourceImage;
-
     public Button exitLobbyButton;
 
-    [Header("Кнопки управления")]
-
+    [Header("Button References")]
     public Button buttonPrefab;
     public Button attackButton;
     public Button defButton;
@@ -49,10 +40,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Slider powerSliderBar;
     public TMP_Text sliderValueText;
 
-    [Header("Статы персонажей")]
+    [Header("Stat Panels")]
     public GameObject player1CurrentStatPanel;
     public GameObject player2CurrentStatPanel;
-
     public TMP_Text player1CurrentAttack;
     public TMP_Text player1CurrentDef;
     public TMP_Text player1CurrentParry;
@@ -73,7 +63,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Character Manager")]
     public CharacterManager chars;
 
-    [Header("Цвета классов")]
+    [Header("Resource Colors")]
     public Color energyColor;
     public Color manaColor;
     public Color rageColor;
@@ -81,23 +71,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Color coldBloodColor;
 
     [Header("Audio Settings")]
-    public AudioClip timerTickSound; // Звук для таймера
-    private AudioSource audioSource; // Аудиоисточник
+    public AudioClip timerTickSound;
+    private AudioSource audioSource;
 
-    private string player1Id, player2Id;
-    private GamePlayer player1, player2;
+    private string player1Id;
+    private string player2Id;
+    private GamePlayer player1;
+    private GamePlayer player2;
     private Button currentActiveButton = null;
     private int roundCounter;
-    
-
-
-    // Добавляем флаги подтвержденного хода
     private bool player1ActionConfirmed = false;
     private bool player2ActionConfirmed = false;
-    
-
-
-
 
     [System.Serializable]
     public class GamePlayer
@@ -108,7 +92,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         public int maxPowerBar, maxResource, currentSuperAbilityState, maxHealth;
         public ResourceType resourceType;
         public CharacterManager.Character character;
-        
+
         public GamePlayer(string id) => Id = id;
 
         public void SetCharacter(CharacterManager.Character character)
@@ -139,40 +123,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         exitLobbyButton.onClick.AddListener(OnExitLobbyButtonClicked);
         UpdatePlayerNicknames();
         CreateCharacterButtons();
-        AssignButtonListeners(attackButton);
-        AssignButtonListeners(defButton);
-        AssignButtonListeners(parryButton);
-        AssignButtonListeners(kickButton);
-        AssignButtonListeners(healButton);
-        AssignButtonListeners(superAbility);
-        powerSliderBar.gameObject.SetActive(false); // слайдер атаки не активен до нажатия кнопки на панели игрока
-        acceptRound.gameObject.SetActive(false); // кнопка принятия раунда не активна до нажатия кнопки на панели игрока
-        sliderValueText.gameObject.SetActive(false);
-        // Устанавливаем обработчик изменения значения слайдера
-        
+        AssignButtonListeners();
+        InitializeUIElements();
+        InitializeAudioSource();
 
-        // Инициализация AudioSource
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
-        audioSource.clip = timerTickSound;
-
-        powerSliderBar.onValueChanged.AddListener(OnSliderValueChanged);
-
-        // Обновляем текст при запуске
-        UpdateSliderValueText(powerSliderBar.value);
-
-        // листнер кнопки подтверждения хода
-        acceptRound.onClick.AddListener(OnAcceptRoundButtonClicked);
-
-
-        // счетчик раундов запускаем с 1 раунда
         roundCounter = 1;
-        roundcountertext.text = roundCounter.ToString();
-
-
+        roundCounterText.text = roundCounter.ToString();
     }
-
-
 
     private void InitializePlayers()
     {
@@ -181,117 +138,100 @@ public class GameManager : MonoBehaviourPunCallbacks
         player1 = new GamePlayer(player1Id);
         player2 = new GamePlayer(player2Id);
     }
-    // настройка кнопок управления
 
-    private void AssignButtonListeners(Button button)
+    private void AssignButtonListeners()
     {
-        if (button != null)
+        Button[] buttons = { attackButton, defButton, parryButton, kickButton, healButton, superAbility };
+        foreach (var button in buttons)
         {
-            button.onClick.AddListener(() => OnButtonPressed(button));
+            if (button != null)
+                button.onClick.AddListener(() => OnButtonPressed(button));
+        }
+    }
+
+    private void InitializeUIElements()
+    {
+        powerSliderBar.gameObject.SetActive(false);
+        acceptRound.gameObject.SetActive(false);
+        sliderValueText.gameObject.SetActive(false);
+        powerSliderBar.onValueChanged.AddListener(OnSliderValueChanged);
+        acceptRound.onClick.AddListener(OnAcceptRoundButtonClicked);
+        UpdateSliderValueText(powerSliderBar.value);
+    }
+
+    private void InitializeAudioSource()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.clip = timerTickSound;
+    }
+
+    private void OnDestroy()
+    {
+        Button[] buttons = { attackButton, defButton, parryButton, kickButton, healButton, superAbility };
+        foreach (var button in buttons)
+        {
+            if (button != null)
+                button.onClick.RemoveAllListeners();
         }
     }
 
     private void OnButtonPressed(Button pressedButton)
     {
-        // Если нажата текущая активная кнопка, "отжимаем" её
         if (currentActiveButton == pressedButton)
         {
             SetButtonState(currentActiveButton, false);
             currentActiveButton = null;
-
-            // Деактивируем связанные объекты
             powerSliderBar.gameObject.SetActive(false);
             acceptRound.gameObject.SetActive(false);
-
             Debug.Log($"Button {pressedButton.name} was unpressed.");
             return;
         }
 
-        // Если есть другая активная кнопка, сбросить её состояние
         if (currentActiveButton != null)
         {
             SetButtonState(currentActiveButton, false);
         }
 
-        // Установить новое активное состояние для нажатой кнопки
         SetButtonState(pressedButton, true);
         currentActiveButton = pressedButton;
-
-        // Активировать связанные объекты
         powerSliderBar.gameObject.SetActive(true);
         acceptRound.gameObject.SetActive(true);
         sliderValueText.gameObject.SetActive(true);
-
         Debug.Log($"Current Active Button: {pressedButton.name}");
     }
-
 
     private void SetButtonState(Button button, bool isActive)
     {
         ColorBlock colors = button.colors;
-
-        // Установите цвет в зависимости от состояния кнопки
         colors.normalColor = isActive ? new Color32(147, 147, 147, 255) : Color.white;
         colors.highlightedColor = isActive ? new Color32(147, 147, 147, 255) : Color.white;
         colors.pressedColor = isActive ? new Color32(147, 147, 147, 255) : Color.white;
-        colors.disabledColor = Color.gray; // Цвет для неактивной кнопки (опционально)
-
-        // Обновить цвета кнопки
+        colors.disabledColor = Color.gray;
         button.colors = colors;
-
-        // Применяем изменения сразу, чтобы UI обновился
         button.GetComponent<Image>().color = colors.normalColor;
     }
-
-    private void OnDestroy()
-    {
-        // Отписываемся от событий, чтобы избежать утечек памяти
-        RemoveButtonListeners(attackButton);
-        RemoveButtonListeners(defButton);
-        RemoveButtonListeners(parryButton);
-        RemoveButtonListeners(kickButton);
-        RemoveButtonListeners(healButton);
-        RemoveButtonListeners(superAbility);
-    }
-
-    private void RemoveButtonListeners(Button button)
-    {
-        if (button != null)
-        {
-            button.onClick.RemoveAllListeners();
-        }
-    }
-
-    // конец найстройки кнопок управления
-
 
     private void CreateCharacterButtons()
     {
         const int buttonWidth = 100, buttonHeight = 100, spacing = 10;
-
-        // Calculate how many columns can fit on the screen
-        float panelWidth = Screen.width - 2 * spacing; // Consider the spacing on both sides
+        float panelWidth = Screen.width - 2 * spacing;
         int columns = Mathf.FloorToInt(panelWidth / (buttonWidth + spacing));
-
-        // Calculate the maximum number of rows that can fit on the screen
-        float panelHeight = Screen.height - 2 * spacing; // Consider the spacing on top and bottom
+        float panelHeight = Screen.height - 2 * spacing;
         int rows = Mathf.FloorToInt(panelHeight / (buttonHeight + spacing));
 
-        // Loop through the initial characters and create buttons
         for (int i = 0; i < chars.initialCharacters.Length; i++)
         {
             var character = chars.initialCharacters[i];
             Button button = Instantiate(buttonPrefab, characterChoicePanel.transform);
             button.GetComponent<Image>().sprite = character.avatar;
 
-            // Get the BorderImage component from the child object
             Transform borderTransform = button.transform.Find("BorderImage");
             if (borderTransform != null)
             {
                 Image borderImage = borderTransform.GetComponent<Image>();
                 if (borderImage != null)
                 {
-                    // Set the color of the BorderImage based on the character's resource type
                     borderImage.color = GetResourceColor(character.resourceType);
                 }
             }
@@ -299,22 +239,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             RectTransform rect = button.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
             int row = i / columns, column = i % columns;
-            rect.anchoredPosition = new Vector2(
-                column * (buttonWidth + spacing) + spacing,
-                -(row * (buttonHeight + spacing)) - spacing
-            );
-
+            rect.anchoredPosition = new Vector2(column * (buttonWidth + spacing) + spacing, -(row * (buttonHeight + spacing)) - spacing);
             button.onClick.AddListener(() => OnCharacterButtonClicked(character));
 
-            // If the panel is becoming too big, break out of the loop
             if (row >= rows)
             {
                 break;
             }
         }
     }
-
-
 
     private void OnCharacterButtonClicked(CharacterManager.Character selectedCharacter)
     {
@@ -323,180 +256,136 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         UpdatePlayerUI(currentPlayer, selectedCharacter);
         SendSelectedCharacterInfo(playerNumber, selectedCharacter.id);
-
         characterChoicePanel.SetActive(false);
-        //запускаем таймер
         StartCoroutine(RoundTimerCoroutine(30f));
 
-        if (playerNumber == 1)
-        {
-            
-            Debug.Log("Player 1 has selected a character.");
-        }
-        else if (playerNumber == 2)
-        {
-            
-            Debug.Log("Player 2 has selected a character.");
-        }
-        // Рассчитываем процент от максимального значения
-       
-
-
+        Debug.Log($"Player {playerNumber} has selected a character.");
     }
-
 
     private void UpdatePlayerUI(GamePlayer player, CharacterManager.Character character)
     {
         player.SetCharacter(character);
 
-        TMP_Text characterNameText = player == player1 ? selectedCharacterNameForPlayer1 : (player == player2 ? selectedCharacterNameForPlayer2 : null);
-        Image playerImage = player == player1 ? player1Image : (player == player2 ? player2Image : null);
-        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : (player == player2 ? playerCurrent2HpText : null);
-        Image ResourceImage = player == player1 ? player1currentResourceImage : (player == player2 ? player2currentResourceImage : null);
-        
+        TMP_Text characterNameText = player == player1 ? selectedCharacterNameForPlayer1 : selectedCharacterNameForPlayer2;
+        Image playerImage = player == player1 ? player1Image : player2Image;
+        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : playerCurrent2HpText;
+        Image resourceImage = player == player1 ? player1currentResourceImage : player2currentResourceImage;
 
-        UpdateStatText(characterNameText, character.name);
+        UpdateText(characterNameText, character.name);
         if (playerImage != null) playerImage.sprite = character.avatar;
-        UpdateStatText(playerHpText, player.currentHealth.ToString());
-        UpdateImageColor(ResourceImage, GetResourceColor(player.resourceType));
-        // Рассчитываем процент от максимального значения
-        float fillAmount = Mathf.Clamp01((float)player.currentHealth / (float)player.character.baseHealth);
-        // Обновляем заполнение изображения
-        var currentHpImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1CurrentHp : player2CurrentHp);
-        currentHpImage.fillAmount = fillAmount;
-        Debug.Log($"{player.currentHealth}/{player.character.baseHealth}");
+        UpdateText(playerHpText, player.currentHealth.ToString());
+        UpdateImageColor(resourceImage, GetResourceColor(player.resourceType));
 
+        float healthFillAmount = Mathf.Clamp01((float)player.currentHealth / player.character.baseHealth);
+        Image currentHpImage = player == player1 ? player1CurrentHp : player2CurrentHp;
+        UpdateImageFill(currentHpImage, healthFillAmount);
 
-     
-        
-        // для ресурса
-        // var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player2currentResourceImage);
-        // float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.maxResource);
-        // currentResImage.fillAmount = fillAmount1;
-
+        float resourceFillAmount = Mathf.Clamp01((float)player.currentResource / player.character.maxResource);
+        UpdateImageFill(resourceImage, resourceFillAmount);
 
         UpdateStatPanel(player);
-        if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
-        (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
-        {
-            if (powerSliderBar != null) // установка размера бустера
-            {
-                if (powerSliderBar.maxValue > player.currentResource)
-                {
-                    powerSliderBar.maxValue = player.currentResource;
-                        
-               }
-                else {
-                    powerSliderBar.maxValue = player.maxPowerBar;
-                    powerSliderBar.value = player.currentPowerBar;
-                }
-                
-            }
-        }
-        
-        
-
+        UpdatePowerSlider(player);
     }
-    // ОБНОВЛЕНИЕ UI ИГРОКОВ
+
     private void UpdatePlayerStats(GamePlayer player)
     {
-        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : (player == player2 ? playerCurrent2HpText : null);
-        UpdateStatText(playerHpText, player.currentHealth.ToString());
+        TMP_Text playerHpText = player == player1 ? playerCurrent1HpText : playerCurrent2HpText;
+        UpdateText(playerHpText, player.currentHealth.ToString());
         UpdateStatPanel(player);
+        UpdatePowerSlider(player);
+
+        float healthFillAmount = Mathf.Clamp01((float)player.currentHealth / player.character.baseHealth);
+        Image currentHpImage = player == player1 ? player1CurrentHp : player2CurrentHp;
+        UpdateImageFill(currentHpImage, healthFillAmount);
+
+        float resourceFillAmount = Mathf.Clamp01((float)player.currentResource / player.character.maxResource);
+        Image currentResourceImage = player == player1 ? player1currentResourceImage : player2currentResourceImage;
+        UpdateImageFill(currentResourceImage, resourceFillAmount);
+    }
+
+    private void UpdatePowerSlider(GamePlayer player)
+    {
         if ((player == player1 && PhotonNetwork.LocalPlayer.UserId == player1Id) ||
-        (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
-        
+            (player == player2 && PhotonNetwork.LocalPlayer.UserId == player2Id))
         {
-            if (powerSliderBar != null) // установка размера бустера
+            if (powerSliderBar != null)
             {
-                if (powerSliderBar.maxValue > player.currentResource)
-                {
-                    powerSliderBar.maxValue = player.currentResource;
-
-                }
-                else
-                {
-                    powerSliderBar.maxValue = player.maxPowerBar;
-                }
-
+                powerSliderBar.maxValue = Mathf.Min(player.currentResource, player.maxPowerBar);
+                powerSliderBar.value = player.currentPowerBar;
             }
         }
-        // Рассчитываем процент от максимального значения
-        float fillAmount = Mathf.Clamp01((float)player.currentHealth / (float)player.character.baseHealth);
-        // Обновляем заполнение изображения
-        var currentHpImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1CurrentHp : player2CurrentHp);
-        currentHpImage.fillAmount = fillAmount;
-        Debug.Log($"{player.currentHealth}/{player.character.baseHealth}");
-
-
-        // для ресурса
-        var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player2currentResourceImage);
-        float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.maxResource);
-        // Обновляем заполнение изображение
-        currentResImage.fillAmount = fillAmount1;
-        
     }
 
     private void UpdateStatPanel(GamePlayer player)
     {
-        GameObject statPanel = player == player1 ? player1CurrentStatPanel : (player == player2 ? player2CurrentStatPanel : null);
-        TMP_Text attackText = player == player1 ? player1CurrentAttack : (player == player2 ? player2CurrentAttack : null);
-        TMP_Text defText = player == player1 ? player1CurrentDef : (player == player2 ? player2CurrentDef : null);
-        TMP_Text parryText = player == player1 ? player1CurrentParry : (player == player2 ? player2CurrentParry : null);
-        TMP_Text kickText = player == player1 ? player1CurrentKick : (player == player2 ? player2CurrentKick : null);
-        TMP_Text healText = player == player1 ? player1CurrentHeal : (player == player2 ? player2CurrentHeal : null);
-        TMP_Text poisonText = player == player1 ? player1PoisonLeft : (player == player2 ? player2PoisonLeft : null);
-        TMP_Text kickTimerText = player == player1 ? player1KickTimer : (player == player2 ? player2KickTimer : null);
-        TMP_Text resourceText = player == player1 ? player1CurrentResource : (player == player2 ? player2CurrentResource : null);
+        GameObject statPanel = player == player1 ? player1CurrentStatPanel : player2CurrentStatPanel;
+        TMP_Text[] statTexts = new TMP_Text[]
+        {
+            player == player1 ? player1CurrentAttack : player2CurrentAttack,
+            player == player1 ? player1CurrentDef : player2CurrentDef,
+            player == player1 ? player1CurrentParry : player2CurrentParry,
+            player == player1 ? player1CurrentKick : player2CurrentKick,
+            player == player1 ? player1CurrentHeal : player2CurrentHeal,
+            player == player1 ? player1PoisonLeft : player2PoisonLeft,
+            player == player1 ? player1KickTimer : player2KickTimer,
+            player == player1 ? player1CurrentResource : player2CurrentResource
+        };
 
+        int[] statValues = new int[]
+        {
+            player.currentAttackPower, player.currentDefPower, player.currentParryPower,
+            player.currentKickDamage, player.currentHealPower, player.currentPoisons,
+            player.currentBreak, player.currentResource
+        };
 
         if (statPanel != null)
         {
             statPanel.SetActive(true);
-            UpdateStatText(attackText, player.currentAttackPower.ToString());
-            UpdateStatText(defText, player.currentDefPower.ToString());
-            UpdateStatText(parryText, player.currentParryPower.ToString());
-            UpdateStatText(kickText, player.currentKickDamage.ToString());
-            UpdateStatText(healText, player.currentHealPower.ToString());
-            UpdateStatText(poisonText, player.currentPoisons.ToString());
-            UpdateStatText(kickTimerText, player.currentBreak.ToString());
-            UpdateStatText(resourceText, player.currentResource.ToString());
+            for (int i = 0; i < statTexts.Length; i++)
+            {
+                UpdateText(statTexts[i], statValues[i].ToString());
+            }
         }
     }
 
-    private void UpdateStatText(TMP_Text textComponent, string value)
+    private void UpdateText(TMP_Text textComponent, string value)
     {
         if (textComponent != null)
-            textComponent.text = value;
-    }
-
-    private void OnSliderValueChanged(float value)
-    {
-        // Округляем значение до ближайшего целого числа
-        int roundedValue = Mathf.RoundToInt(value);
-        powerSliderBar.value = roundedValue;
-
-        // Обновляем текст
-        UpdateSliderValueText(roundedValue);
-    }
-
-    private void UpdateSliderValueText(float value)
-    {
-        // Устанавливаем текст в зависимости от текущего значения
-        if (sliderValueText != null)
         {
-            sliderValueText.text = value.ToString();
-
-            // Опционально: Переместить текст над хендлом
-            RectTransform handleRect = powerSliderBar.handleRect;
-            sliderValueText.transform.position = handleRect.position + new Vector3(0, Screen.height * 0.05f, 0);            // Смещение над хендлом
+            textComponent.text = value;
         }
     }
+
+    private void UpdateImageFill(Image imageComponent, float fillAmount)
+    {
+        if (imageComponent != null)
+        {
+            imageComponent.fillAmount = fillAmount;
+        }
+    }
+
     private void UpdateImageColor(Image resourceImage, Color color)
     {
         if (resourceImage != null)
         {
             resourceImage.color = color;
+        }
+    }
+
+    private void OnSliderValueChanged(float value)
+    {
+        int roundedValue = Mathf.RoundToInt(value);
+        powerSliderBar.value = roundedValue;
+        UpdateSliderValueText(roundedValue);
+    }
+
+    private void UpdateSliderValueText(float value)
+    {
+        if (sliderValueText != null)
+        {
+            sliderValueText.text = value.ToString();
+            RectTransform handleRect = powerSliderBar.handleRect;
+            sliderValueText.transform.position = handleRect.position + new Vector3(0, Screen.height * 0.05f, 0);
         }
     }
 
@@ -562,39 +451,29 @@ public class GameManager : MonoBehaviourPunCallbacks
         };
     }
 
-   
-    // обработчик нажатия на кнопку ОК подтверждения хода
     private void OnAcceptRoundButtonClicked()
     {
         if (currentActiveButton == null)
         {
             Debug.LogWarning("No action button selected!");
             return;
-   
         }
 
         StopAllCoroutines();
         acceptRound.interactable = false;
-        // Получение текущих данных
         string actionButtonName = currentActiveButton.name;
         float sliderValue = powerSliderBar.value;
         int playerNumber = PhotonNetwork.LocalPlayer.UserId == player1Id ? 1 : 2;
 
-        // Отправить данные другому игроку через RPC
         photonView.RPC("SendActionDataRPC", RpcTarget.All, playerNumber, actionButtonName, sliderValue);
-        
         Debug.Log($"Action confirmed: {actionButtonName} with power: {sliderValue}");
     }
-    
-   
 
-    // данные отправлены другим игрокам о нажатии кнопки ОКей
     [PunRPC]
     private void SendActionDataRPC(int playerNumber, string actionButtonName, float sliderValue)
     {
         Debug.Log($"Player {playerNumber} selected action: {actionButtonName} with power: {sliderValue}");
-        
-        // Установка флага для соответствующего игрока
+
         if (playerNumber == 1)
         {
             player1ActionConfirmed = true;
@@ -608,7 +487,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             player2.currentPowerBar = (int)sliderValue;
         }
 
-        // Проверка, отправили ли оба игрока свои данные
         if (player1ActionConfirmed && player2ActionConfirmed)
         {
             acceptRound.interactable = true;
@@ -621,21 +499,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             UpdatePlayerStats(player2);
 
             Debug.Log("Both players have confirmed their actions.");
-
-
-            // +1 к счетчику раундов
             roundCounter++;
-            roundcountertext.text = roundCounter.ToString();
-            
-            // Сбрасываем флаги
+            roundCounterText.text = roundCounter.ToString();
             player1ActionConfirmed = false;
-            
             player2ActionConfirmed = false;
-
         }
-
-        
-
     }
 
     private IEnumerator RoundTimerCoroutine(float duration)
@@ -643,135 +511,92 @@ public class GameManager : MonoBehaviourPunCallbacks
         float remainingTime = duration;
         while (remainingTime > 0)
         {
-            // Обновляем текст таймера
             roundTimer.text = Mathf.Ceil(remainingTime).ToString();
-            // Ждем одну секунду
             yield return new WaitForSeconds(1f);
-
-            // Уменьшаем оставшееся время
             remainingTime--;
         }
 
-        // Таймер завершился
         roundTimer.text = "0";
         Debug.Log("Round timer has ended!");
-
     }
 
     private void StartNewRound()
     {
         Debug.Log($"Starting round {roundCounter}!");
-        
-        StartCoroutine(RoundTimerCoroutine(30f)); // Таймер на 30 секунд
+        StartCoroutine(RoundTimerCoroutine(30f));
     }
-
-    // GAMELOGIC
-
-
 
     void ProcessTurn(GamePlayer attacker, GamePlayer defender)
     {
-        float damage = 0;
         attacker.currentResource -= attacker.currentPowerBar;
+        float damage = CalculateDamage(attacker, defender);
+        ApplyDamage(defender, damage);
 
-        // Обработка атаки
-        if (attacker.selectedActionButtonName == "attackButton")
+        if (attacker.selectedActionButtonName == "healButton")
         {
-            switch (defender.selectedActionButtonName)
-            {
-                case "attackButton":
-                case "kickButton":
-                case "healButton":
-                    damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-                    break;
-                case "defButton":
-                    break;
-                case "parryButton":
-                    damage = (attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower) / 2;
-                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-                    break;
-            }
+            HealPlayer(attacker);
         }
 
-        // Обработка защиты
-        else if (attacker.selectedActionButtonName == "defButton")
-        {
-            switch (defender.selectedActionButtonName)
-            {
-                case "attackButton":
-                case "parryButton":
-                    damage = attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
-                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-                    break;
-                case "defButton":
-                case "kickButton":
-                case "healButton":
-                    break;
-            }
-        }
-
-        // Обработка парирования
-        else if (attacker.selectedActionButtonName == "parryButton")
-        {
-            switch (defender.selectedActionButtonName)
-            {
-                case "attackButton":
-                    damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentAttackPower / 2);
-                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-                    break;
-                case "defButton":
-                    damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f);
-                    attacker.currentHealth = Mathf.Clamp(attacker.currentHealth - (int)damage, 0, attacker.maxHealth);
-                    break;
-                case "kickButton":
-                    damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f) + (defender.currentKickDamage / 2);
-                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-                    break;
-                case "parryButton":
-                case "healButton":
-                    break;
-            }
-        }
-
-        // Обработка удара
-        else if (attacker.selectedActionButtonName == "kickButton")
-        {
-            switch (defender.selectedActionButtonName)
-            {
-                case "defButton":
-                case "kickButton":
-                case "healButton":
-                    damage = attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
-                    defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
-                    break;
-                case "attackButton":
-                case "parryButton":
-                    break;
-            }
-        }
-
-        // Обработка лечения
-        else if (attacker.selectedActionButtonName == "healButton")
-        {
-            // Лечение атакующего
-            damage = attacker.currentHealPower + (attacker.currentHealPower * attacker.currentPowerBar / 100f);
-            attacker.currentHealth = Mathf.Clamp(attacker.currentHealth + (int)damage, 0, attacker.maxHealth);
-
-            // Лечение защитника, если он также лечится
-            if (defender.selectedActionButtonName == "healButton")
-            {
-                return;
-            }
-
-            // Если защитник использует "kickButton", лечение атакующего не срабатывает
-            if (defender.selectedActionButtonName == "kickButton")
-            {
-                return;
-            }
-        }
+        UpdatePlayerStats(attacker);
+        UpdatePlayerStats(defender);
     }
 
+    private float CalculateDamage(GamePlayer attacker, GamePlayer defender)
+    {
+        return attacker.selectedActionButtonName switch
+        {
+            "attackButton" => CalculateAttackDamage(attacker, defender),
+            "defButton" => CalculateDefendDamage(attacker, defender),
+            "parryButton" => CalculateParryDamage(attacker, defender),
+            "kickButton" => CalculateKickDamage(attacker, defender),
+            _ => 0
+        };
+    }
 
+    private float CalculateAttackDamage(GamePlayer attacker, GamePlayer defender)
+    {
+        float damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
+        if (defender.selectedActionButtonName == "parryButton")
+            damage /= 2;
+        return damage;
+    }
 
+    private float CalculateDefendDamage(GamePlayer attacker, GamePlayer defender)
+    {
+        if (defender.selectedActionButtonName == "attackButton" || defender.selectedActionButtonName == "parryButton")
+            return attacker.currentDefPower + (attacker.currentDefPower * attacker.currentPowerBar / 100f);
+        return 0;
+    }
+
+    private float CalculateParryDamage(GamePlayer attacker, GamePlayer defender)
+    {
+        float damage = attacker.currentParryPower + (attacker.currentParryPower * attacker.currentPowerBar / 100f);
+        if (defender.selectedActionButtonName == "attackButton")
+            damage += defender.currentAttackPower / 2;
+        else if (defender.selectedActionButtonName == "kickButton")
+            damage += defender.currentKickDamage / 2;
+        else if (defender.selectedActionButtonName == "defButton")
+        {
+            damage = defender.currentDefPower + (defender.currentDefPower * defender.currentPowerBar / 100f);
+            ApplyDamage(attacker, damage);
+            return 0;
+        }
+        return damage;
+    }
+
+    private float CalculateKickDamage(GamePlayer attacker, GamePlayer defender)
+    {
+        return attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
+    }
+
+    private void ApplyDamage(GamePlayer player, float damage)
+    {
+        player.currentHealth = Mathf.Clamp(player.currentHealth - (int)damage, 0, player.maxHealth);
+    }
+
+    private void HealPlayer(GamePlayer player)
+    {
+        float healAmount = player.currentHealPower + (player.currentHealPower * player.currentPowerBar / 100f);
+        player.currentHealth = Mathf.Clamp(player.currentHealth + (int)healAmount, 0, player.maxHealth);
+    }
 }
