@@ -405,13 +405,19 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
         // Рассчитываем процент от максимального значения
-        float fillAmount = Mathf.Clamp01(player.currentHealth / player.character.baseHealth);
-
-
+        float fillAmount = Mathf.Clamp01((float)player.currentHealth / (float)player.character.baseHealth);
         // Обновляем заполнение изображения
-               var currentHpImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1CurrentHp : player2CurrentHp);
+        var currentHpImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1CurrentHp : player2CurrentHp);
         currentHpImage.fillAmount = fillAmount;
         Debug.Log($"{player.currentHealth}/{player.character.baseHealth}");
+
+
+        // для ресурса
+        var currentResImage = (player.Id == PhotonNetwork.LocalPlayer.UserId ? player1currentResourceImage : player1currentResourceImage);
+        float fillAmount1 = Mathf.Clamp01((float)player.currentResource / (float)player.character.baseResource);
+        // Обновляем заполнение изображение
+        currentResImage.fillAmount = fillAmount1;
+        
     }
 
     private void UpdateStatPanel(GamePlayer player)
