@@ -673,7 +673,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         float damage = 0;
         attacker.currentResource -= attacker.currentPowerBar;
-        // Обработка атаки игрока
+
+        // Обработка атаки
         if (attacker.selectedActionButtonName == "attackButton")
         {
             switch (defender.selectedActionButtonName)
@@ -685,7 +686,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                     defender.currentHealth = Mathf.Clamp(defender.currentHealth - (int)damage, 0, defender.maxHealth);
                     break;
                 case "defButton":
-                    // Атака блокируется, ничего не происходит
                     break;
                 case "parryButton":
                     damage = (attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower) / 2;
@@ -694,7 +694,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
 
-        // Обработка защиты игрока
+        // Обработка защиты
         else if (attacker.selectedActionButtonName == "defButton")
         {
             switch (defender.selectedActionButtonName)
@@ -707,12 +707,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                 case "defButton":
                 case "kickButton":
                 case "healButton":
-                    // Ничего не происходит
                     break;
             }
         }
 
-        // Обработка парирования игрока
+        // Обработка парирования
         else if (attacker.selectedActionButtonName == "parryButton")
         {
             switch (defender.selectedActionButtonName)
@@ -731,12 +730,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                     break;
                 case "parryButton":
                 case "healButton":
-                    // Ничего не происходит
                     break;
             }
         }
 
-        // Обработка пинка игрока
+        // Обработка удара
         else if (attacker.selectedActionButtonName == "kickButton")
         {
             switch (defender.selectedActionButtonName)
@@ -749,28 +747,28 @@ public class GameManager : MonoBehaviourPunCallbacks
                     break;
                 case "attackButton":
                 case "parryButton":
-                    // Ничего не происходит
                     break;
             }
         }
 
-        // Обработка лечения игрока
+        // Обработка лечения
         else if (attacker.selectedActionButtonName == "healButton")
         {
-
-            // Лечение всегда лечит атакующего
+            // Лечение атакующего
             damage = attacker.currentHealPower + (attacker.currentHealPower * attacker.currentPowerBar / 100f);
             attacker.currentHealth = Mathf.Clamp(attacker.currentHealth + (int)damage, 0, attacker.maxHealth);
 
+            // Лечение защитника, если он также лечится
+            if (defender.selectedActionButtonName == "healButton")
+            {
+                return;
+            }
 
-            // Если защитник использует "kickButton", лечение атакующего не происходит
+            // Если защитник использует "kickButton", лечение атакующего не срабатывает
             if (defender.selectedActionButtonName == "kickButton")
             {
                 return;
             }
-            
-            
-
         }
     }
 
