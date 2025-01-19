@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -494,7 +495,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Обработка действий игроков
             ProcessTurn(player1, player2);
-            ProcessTurn(player2, player1);
+            
 
             UpdatePlayerStats(player1);
             UpdatePlayerStats(player2);
@@ -534,95 +535,65 @@ public class GameManager : MonoBehaviourPunCallbacks
         StartCoroutine(RoundTimerCoroutine(30f));
     }
 
-    void ProcessTurn(GamePlayer attacker, GamePlayer defender)
+    void ProcessTurn(GamePlayer player1, GamePlayer player2)
     {
-        attacker.currentResource -= attacker.currentPowerBar;
-        float damage = CalculateDamage(attacker, defender);
-        ApplyDamage(defender, damage);
+        player1.currentResource -= player1.currentPowerBar;
+        player2.currentResource -= player2.currentPowerBar;
 
-        // Если один игрок использует лечение, а другой пинок, то лечение не применяется
-        if (!((attacker.selectedActionButtonName == "healButton" && defender.selectedActionButtonName == "kickButton") ||
-              (attacker.selectedActionButtonName == "kickButton" && defender.selectedActionButtonName == "healButton")))
+        // атака первого игрока, остальные кнопки второго игрока
+        if(player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "attackButton")
         {
-            if (attacker.selectedActionButtonName == "healButton")
-            {
-                HealPlayer(attacker);
-            }
+            player1.currentHealth = player1.currentHealth - (player2.currentAttackPower + (player2.currentAttackPower * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - player1.currentAttackPower + (player1.currentPowerBar* player1.currentAttackPower/100);
         }
 
-        UpdatePlayerStats(attacker);
-        UpdatePlayerStats(defender);
-    }
-
-    private float CalculateDamage(GamePlayer attacker, GamePlayer defender)
-    {
-        return attacker.selectedActionButtonName switch
+        if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "defButton")
         {
-            "attackButton" => CalculateAttackDamage(attacker, defender),
-            "defButton" => 0, // Защита не наносит урон
-            "parryButton" => CalculateParryDamage(attacker, defender),
-            "kickButton" => CalculateKickDamage(attacker, defender),
-            _ => 0
-        };
-    }
-
-    private float CalculateAttackDamage(GamePlayer attacker, GamePlayer defender)
-    {
-        float damage = attacker.currentAttackPower * (attacker.currentPowerBar / 100f) + attacker.currentAttackPower;
-        // Если защитник использует защиту, урон блокируется, а атакующий получает урон от показателя защиты защитника
-        if (defender.selectedActionButtonName == "defButton")
-        {
-            ApplyDamage(attacker, defender.currentDefPower);
-            return 0;
+            player1.currentHealth = player1.currentHealth - (player2.currentDefPower +(player2.currentDefPower * player2.currentPowerBar/100));
+            player2.currentHealth = player2.currentHealth - 0;
         }
-        return damage;
-    }
-
-    private float CalculateDefendDamage(GamePlayer attacker, GamePlayer defender)
-    {
-        // Защита блокирует весь урон и наносит урон атакующему от показателя защиты защитника
-        if (defender.selectedActionButtonName == "attackButton")
+        if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "parryButton")
         {
-            ApplyDamage(defender, attacker.currentDefPower);
-            return 0;
+            player1.currentHealth = player1.currentHealth - (player2.currentParryPower + (player2.currentParryPower * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - player1.currentAttackPower/2;
         }
-        return attacker.currentDefPower;
-    }
-
-    private float CalculateParryDamage(GamePlayer attacker, GamePlayer defender)
-    {
-        // Урон, который наносит парирующий
-        float defenderDamage = defender.currentParryPower + (defender.currentParryPower * defender.currentPowerBar / 100f);
-        // Урон, который наносит атакующий
-        float attackerDamage = 0;
-
-        if (attacker.selectedActionButtonName == "attackButton")
+        if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "kickButton")
         {
-            // Атакующий получает 50% от своего урона
-            attackerDamage = attacker.currentAttackPower / 2;
-            // Парирующий блокирует и наносит 50% от урона атакующего
-            defenderDamage = attacker.currentAttackPower / 2;
+            player1.currentHealth = player1.currentHealth - (player2.currentKickDamage + (player2.currentKickDamage * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - player1.currentAttackPower;
+        }
+        if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "healButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth - player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100);
+        }
+        // защита первого игрока, остальные кнопки второго игрока
+        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "attackButton")
+        {
+           player1.currentHealth = player1.currentHealth - 0;
+           player2.currentHealth = player2.currentHealth - (player1.currentDefPower + (player1.currentDefPower * player1.currentPowerBar / 100));
+         }
+        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "parryButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentDefPower + (player2.currentDefPower * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - 0;  
+        }
+        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "kickButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentKickDamage + (player2.currentKickDamage * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - 0;
+        }
+        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "healButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100);
+        }
+        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "defButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentDefPower + (player2.currentDefPower * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - player1.currentDefPower + (player1.currentPowerBar * player1.currentDefPower / 100);
+
         }
 
-        // Применить урон к атакующему
-        ApplyDamage(attacker, attackerDamage);
-
-        return defenderDamage;
-    }
-
-    private float CalculateKickDamage(GamePlayer attacker, GamePlayer defender)
-    {
-        return attacker.currentKickDamage + (attacker.currentKickDamage * attacker.currentPowerBar / 100f);
-    }
-
-    private void ApplyDamage(GamePlayer player, float damage)
-    {
-        player.currentHealth = Mathf.Clamp(player.currentHealth - (int)damage, 0, player.maxHealth);
-    }
-
-    private void HealPlayer(GamePlayer player)
-    {
-        float healAmount = player.currentHealPower + (player.currentHealPower * player.currentPowerBar / 100f);
-        player.currentHealth = Mathf.Clamp(player.currentHealth + (int)healAmount, 0, player.maxHealth);
     }
 }
