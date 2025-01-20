@@ -506,23 +506,24 @@ public class GameManager : MonoBehaviourPunCallbacks
             // механика пинка против дефа
             if (player1.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
             { defButton.interactable = false;
-              player1defCD.text = player1.breakroundleftdefence.ToString();
+              
             }
             if (player2.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 defButton.interactable = false;
-                player2defCD.text = player2.breakroundleftdefence.ToString();
-            }
+             }
+            player2defCD.text = player2.breakroundleftdefence.ToString();
+            player1defCD.text = player1.breakroundleftdefence.ToString();
 
             // механика пинка против хилки
             if (player1.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
             {
-                defButton.interactable = false;
+                healButton.interactable = false;
                 player1defCD.text = player1.breakroundleftheal.ToString();
             }
             if (player2.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
-                defButton.interactable = false;
+                healButton.interactable = false;
                 player2defCD.text = player2.breakroundleftheal.ToString();
             }
 
@@ -570,10 +571,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         player1.currentResource -= player1.currentPowerBar;
         player2.currentResource -= player2.currentPowerBar;
-        player1.breakroundleftdefence --;
-        player2.breakroundleftdefence --;
-        player1.breakroundleftheal--;
-        player2.breakroundleftheal--;
+
+        // проверяем, что есть кд на деф, и уменьшаем его на 1.
+        if (player1.breakroundleftdefence > 0)
+        {player1.breakroundleftdefence--;}
+        if (player1.breakroundleftdefence > 0)
+        { player1.breakroundleftdefence--;}
+
+        // проверяем, что есть кд на хил, и уменьшаем его на 1.
+        if (player1.breakroundleftheal > 0)
+        { player1.breakroundleftheal--; }
+        if (player1.breakroundleftheal > 0)
+        { player1.breakroundleftheal--; }
+        
 
         // атака первого игрока, остальные кнопки второго игрока
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "attackButton")
