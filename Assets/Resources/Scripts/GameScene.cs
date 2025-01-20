@@ -503,30 +503,33 @@ public class GameManager : MonoBehaviourPunCallbacks
             ProcessTurn(player1, player2);
 
 
-            // механика пинка против дефа
+            // Проверяем, что есть кд на деф и отключаем кнопку, если это так
             if (player1.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
-            { 
+            {
                 defButton.interactable = false;
-             }
+            }
+            else { defButton.interactable = true;}
             if (player2.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 defButton.interactable = false;
-             }
-            player2defCD.text = player2.breakroundleftdefence.ToString();
+            }
+            else { defButton.interactable = true;}
             player1defCD.text = player1.breakroundleftdefence.ToString();
+            player2defCD.text = player2.breakroundleftdefence.ToString();
 
-            // механика пинка против хилки
+            // Механика пинка против хилки, проверяем кд на хил и отключаем кнопку, если это так
             if (player1.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
             {
                 healButton.interactable = false;
-      
             }
+            else {  healButton.interactable = true;}
             if (player2.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 healButton.interactable = false;
             }
-            player2defCD.text = player2.breakroundleftheal.ToString();
-            player1defCD.text = player1.breakroundleftheal.ToString();
+            else { healButton.interactable = true; }
+            player1healCD.text = player1.breakroundleftheal.ToString();
+            player2healCD.text = player2.breakroundleftheal.ToString();
 
 
             // апдейт 
