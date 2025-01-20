@@ -561,12 +561,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "kickButton")
         {
             player1.currentHealth = player1.currentHealth - (player2.currentKickDamage + (player2.currentKickDamage * player2.currentPowerBar / 100));
-            player2.currentHealth = player2.currentHealth - player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100);
+            player2.currentHealth = player2.currentHealth - (player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100));
         }
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "healButton")
         {
             player1.currentHealth = player1.currentHealth - 0;
-            player2.currentHealth = player2.currentHealth - player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100);
+            player2.currentHealth = player2.currentHealth - (player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100));
         }
         // защита первого игрока, остальные кнопки второго игрока
         if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "attackButton")
@@ -593,7 +593,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "healButton")
         {
             player1.currentHealth = player1.currentHealth - 0;
-            player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100);
+            player2.currentHealth = player2.currentHealth + (player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100));
         }
         
         // Парирование первого игрока, остальные кнопки второго игрока
