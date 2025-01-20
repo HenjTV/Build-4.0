@@ -674,8 +674,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "kickButton")
         {
-            player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100););
-            player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100); ;
+            player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100);
+            player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100);
         }
 
     }
