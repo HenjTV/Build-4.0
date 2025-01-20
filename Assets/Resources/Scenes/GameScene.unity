@@ -1699,7 +1699,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0.018810749, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3429,8 +3429,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278199039
-  m_fontColor: {r: 1, g: 0.13490763, b: 0, a: 1}
+    rgba: 4282012821
+  m_fontColor: {r: 0.58431375, g: 0.32941177, b: 0.22745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4586,7 +4586,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0.019607844, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5911,8 +5911,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278199039
-  m_fontColor: {r: 1, g: 0.13490763, b: 0, a: 1}
+    rgba: 4282012821
+  m_fontColor: {r: 0.58431375, g: 0.32941177, b: 0.22745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6562,7 +6562,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0.019607844, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7168,6 +7168,10 @@ MonoBehaviour:
   playerCurrent2HpText: {fileID: 1957583855}
   roundTimer: {fileID: 1632701934}
   combatLog: {fileID: 256783630}
+  player1defCD: {fileID: 499886296}
+  player1healCD: {fileID: 1641338678}
+  player2defCD: {fileID: 2078629841}
+  player2healCD: {fileID: 1151818140}
   player1CurrentHp: {fileID: 1260704185}
   player2CurrentHp: {fileID: 492056732}
   player1currentResourceImage: {fileID: 588129112}
@@ -7947,7 +7951,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0.019607844, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
