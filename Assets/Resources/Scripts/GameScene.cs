@@ -88,9 +88,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     public class GamePlayer
     {
         public string Id, selectedActionButtonName;
-        public int currentAttackPower, currentDefPower, currentParryPower, currentKickDamage, currentBreak;
-        public int currentHealPower, currentPoisons, currentHealth, currentResource, currentPowerBar;
-        public int maxPowerBar, maxResource, currentSuperAbilityState, maxHealth;
+        public float maxHealth, maxResource, currentAttackPower, currentDefPower, currentParryPower, currentKickDamage, currentBreak, currentResource, currentHealPower, currentHealth;
+        public int currentPoisons, currentPowerBar;
+        public int maxPowerBar, currentSuperAbilityState;
         public ResourceType resourceType;
         public CharacterManager.Character character;
 
@@ -332,7 +332,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             player == player1 ? player1CurrentResource : player2CurrentResource
         };
 
-        int[] statValues = new int[]
+        float[] statValues = new float[]
         {
             player.currentAttackPower, player.currentDefPower, player.currentParryPower,
             player.currentKickDamage, player.currentHealPower, player.currentPoisons,
