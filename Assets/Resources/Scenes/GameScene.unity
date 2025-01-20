@@ -231,7 +231,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 225, y: -92.5}
+  m_AnchoredPosition: {x: 225, y: -107.50001}
   m_SizeDelta: {x: 150, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &105936560
@@ -1631,6 +1631,140 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492056730}
+  m_CullTransparentMesh: 1
+--- !u!1 &499886294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 499886295}
+  - component: {fileID: 499886297}
+  - component: {fileID: 499886296}
+  m_Layer: 0
+  m_Name: defCD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &499886295
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499886294}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1010734950718357191}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -30, y: -28}
+  m_SizeDelta: {x: 22, y: 10}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &499886296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499886294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 15
+  m_fontSizeBase: 15
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &499886297
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499886294}
   m_CullTransparentMesh: 1
 --- !u!1 &504330184
 GameObject:
@@ -3241,7 +3375,7 @@ GameObject:
   - component: {fileID: 833885221}
   - component: {fileID: 833885220}
   m_Layer: 0
-  m_Name: kickTimerText
+  m_Name: breakPowerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3849,252 +3983,252 @@ MonoBehaviour:
     avatar: {fileID: 21300000, guid: b7ae428a59d0bbe4ea02eb0e16116d34, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: Samurai Desc S
-    attackPower: 100
-    defense: 100
-    parry: 100
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 100
+    DefencePower: 100
+    ParryPower: 100
+    KickPower: 100
+    BreakPower: 3
+    HealPower: 100
+    Poisons: 3
     resourceType: 0
     baseHealth: 1000
     baseResource: 35
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 1
     name: ShieldGirl
     description: ShieldGirl Desc
     avatar: {fileID: 21300000, guid: 0b701fbdedafb83458084257ad4d19ee, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: ShieldGirl Desc S
-    attackPower: 101
-    defense: 51
-    parry: 151
-    kickDamage: 31
-    kickCooldown: 2
-    healPower: 76
-    healCharges: 4
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 2
     baseHealth: 1001
     baseResource: 51
     maxResource: 101
-    booster: 100
+    maxPowerBar: 0
   - id: 2
     name: Driada
     description: Driada Desc
     avatar: {fileID: 21300000, guid: 5e617414260737f46b35ccd7790ab8b7, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: Driada Desc S
-    attackPower: 102
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 1
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 3
     name: Gunman
     description: Gunman Desc
     avatar: {fileID: 21300000, guid: f8090ac35c84a6e46b7fc1b651d1c50b, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: Gunman Desc S
-    attackPower: 103
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 3
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 4
     name: Lion
     description: Lion Desc
     avatar: {fileID: 21300000, guid: 63a83f0b4a9331a41b6d04d524668947, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: Lion Desc S
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 4
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 5
     name: fireswod
     description: fireswod
     avatar: {fileID: 21300000, guid: 261b189a182a5a54cbff533fab447297, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: fireswod
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 2
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 6
     name: rogue
     description: rogue
     avatar: {fileID: 21300000, guid: db03bba923a320f4b9a1e970b95c4f4a, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: rogue
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 0
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 7
     name: viking
     description: viking
     avatar: {fileID: 21300000, guid: f595c620ae8b67849b68525f3308a6b7, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: viking
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 2
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 8
     name: wizard
     description: wizard
     avatar: {fileID: 21300000, guid: e280703581c6ace4cbf2e9eef709fa18, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: wizard
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 1
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 9
     name: bow
     description: bow
     avatar: {fileID: 21300000, guid: b65414e41530bf94395f0bd16425a6a9, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: bow
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 3
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 10
     name: bomb
     description: bomb
     avatar: {fileID: 21300000, guid: e3fd59748eaad754d8b67b0a8a7c85bc, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: bomb
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 3
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 11
     name: darkpaladin
     description: darkpaladin
     avatar: {fileID: 21300000, guid: dce3fefcfb54cbd4aae978d210845de2, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: darkpaladin
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 3
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 12
     name: cyberpriest
     description: cyberpriest
     avatar: {fileID: 21300000, guid: 04421be7246f5a449bdd087e41ab8b1e, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: cyberpriest
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 1
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
   - id: 13
     name: vampire
     description: vampire
     avatar: {fileID: 21300000, guid: 2f92d529feced5349b4d7610f57df39e, type: 3}
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: vampire
-    attackPower: 104
-    defense: 50
-    parry: 150
-    kickDamage: 30
-    kickCooldown: 1
-    healPower: 75
-    healCharges: 3
+    AttackPower: 0
+    DefencePower: 0
+    ParryPower: 0
+    KickPower: 0
+    BreakPower: 0
+    HealPower: 0
+    Poisons: 0
     resourceType: 1
     baseHealth: 1000
     baseResource: 100
     maxResource: 100
-    booster: 25
+    maxPowerBar: 0
 --- !u!114 &1092098044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4385,6 +4519,140 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134915123}
   m_CullTransparentMesh: 1
+--- !u!1 &1151818138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1151818139}
+  - component: {fileID: 1151818141}
+  - component: {fileID: 1151818140}
+  m_Layer: 0
+  m_Name: healCD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1151818139
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151818138}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3649366021127224409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 60, y: -28}
+  m_SizeDelta: {x: 22, y: 10}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1151818140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151818138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 15
+  m_fontSizeBase: 15
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1151818141
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151818138}
+  m_CullTransparentMesh: 1
 --- !u!1 &1157230849
 GameObject:
   m_ObjectHideFlags: 0
@@ -4589,7 +4857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -224.99998, y: -92.5}
+  m_AnchoredPosition: {x: -224.99998, y: -107.50001}
   m_SizeDelta: {x: 150, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1245423025
@@ -5589,7 +5857,7 @@ GameObject:
   - component: {fileID: 1565133073}
   - component: {fileID: 1565133072}
   m_Layer: 0
-  m_Name: kickTimerText
+  m_Name: breakPowerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6226,6 +6494,140 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1632701932}
+  m_CullTransparentMesh: 1
+--- !u!1 &1641338676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1641338677}
+  - component: {fileID: 1641338679}
+  - component: {fileID: 1641338678}
+  m_Layer: 0
+  m_Name: healCD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1641338677
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641338676}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1010734950718357191}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 60, y: -28}
+  m_SizeDelta: {x: 22, y: 10}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1641338678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641338676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 15
+  m_fontSizeBase: 15
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1641338679
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641338676}
   m_CullTransparentMesh: 1
 --- !u!1 &1699138517
 GameObject:
@@ -7478,6 +7880,140 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2029518887}
   m_CullTransparentMesh: 1
+--- !u!1 &2078629839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2078629840}
+  - component: {fileID: 2078629842}
+  - component: {fileID: 2078629841}
+  m_Layer: 0
+  m_Name: defCD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2078629840
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078629839}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3649366021127224409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -30, y: -28}
+  m_SizeDelta: {x: 22, y: 10}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2078629841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078629839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 15
+  m_fontSizeBase: 15
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &2078629842
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078629839}
+  m_CullTransparentMesh: 1
 --- !u!1 &2118432834
 GameObject:
   m_ObjectHideFlags: 0
@@ -7993,6 +8529,8 @@ RectTransform:
   - {fileID: 8160303688789811176}
   - {fileID: 1123886267}
   - {fileID: 833885219}
+  - {fileID: 499886295}
+  - {fileID: 1641338677}
   m_Father: {fileID: 143099679}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -8335,6 +8873,8 @@ RectTransform:
   - {fileID: 5592562415073549686}
   - {fileID: 199171235}
   - {fileID: 1565133071}
+  - {fileID: 2078629840}
+  - {fileID: 1151818139}
   m_Father: {fileID: 143099679}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}

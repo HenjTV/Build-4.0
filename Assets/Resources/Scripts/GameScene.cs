@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public TMP_Text playerCurrent2HpText;
     public TMP_Text roundTimer;
     public TMP_Text combatLog;
+    public TMP_Text player1defCD;
+    public TMP_Text player1healCD;
+    public TMP_Text player2defCD;
+    public TMP_Text player2healCD;
     public Image player1CurrentHp;
     public Image player2CurrentHp;
     public Image player1currentResourceImage;
@@ -497,8 +501,33 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // Обработка действий игроков
             ProcessTurn(player1, player2);
-            
 
+
+            // механика пинка против дефа
+            if (player1.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
+            { defButton.interactable = false;
+              player1defCD.text = player1.breakroundleftdefence.ToString();
+            }
+            if (player2.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
+            {
+                defButton.interactable = false;
+                player2defCD.text = player2.breakroundleftdefence.ToString();
+            }
+
+            // механика пинка против хилки
+            if (player1.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
+            {
+                defButton.interactable = false;
+                player1defCD.text = player1.breakroundleftheal.ToString();
+            }
+            if (player2.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
+            {
+                defButton.interactable = false;
+                player2defCD.text = player2.breakroundleftheal.ToString();
+            }
+
+
+            // апдейт 
             UpdatePlayerStats(player1);
             UpdatePlayerStats(player2);
 
@@ -541,9 +570,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         player1.currentResource -= player1.currentPowerBar;
         player2.currentResource -= player2.currentPowerBar;
+        player1.breakroundleftdefence --;
+        player2.breakroundleftdefence --;
+        player1.breakroundleftheal--;
+        player2.breakroundleftheal--;
 
         // атака первого игрока, остальные кнопки второго игрока
-        if(player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "attackButton")
+        if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "attackButton")
         {
             player1.currentHealth = player1.currentHealth - (player2.currentAttackPower + (player2.currentAttackPower * player2.currentPowerBar / 100f));
             player2.currentHealth = player2.currentHealth - (player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower/ 100f));
