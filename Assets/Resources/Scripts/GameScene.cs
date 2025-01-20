@@ -554,13 +554,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "parryButton")
         {
-            player1.currentHealth = player1.currentHealth - (player2.currentParryPower + (player2.currentParryPower * player2.currentPowerBar / 100));
+            player1.currentHealth = player1.currentHealth - (player2.currentParryPower + (player2.currentParryPower * player2.currentPowerBar / 100) + 
+                player1.currentAttackPower / 2);
             player2.currentHealth = player2.currentHealth - player1.currentAttackPower/2;
         }
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "kickButton")
         {
             player1.currentHealth = player1.currentHealth - (player2.currentKickDamage + (player2.currentKickDamage * player2.currentPowerBar / 100));
-            player2.currentHealth = player2.currentHealth - player1.currentAttackPower;
+            player2.currentHealth = player2.currentHealth - player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100);
         }
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "healButton")
         {
@@ -573,9 +574,15 @@ public class GameManager : MonoBehaviourPunCallbacks
            player1.currentHealth = player1.currentHealth - 0;
            player2.currentHealth = player2.currentHealth - (player1.currentDefPower + (player1.currentDefPower * player1.currentPowerBar / 100));
          }
+        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "defButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth - 0;
+        }
         if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "parryButton")
         {
-            player1.currentHealth = player1.currentHealth - (player2.currentDefPower + (player2.currentDefPower * player2.currentPowerBar / 100));
+            player1.currentHealth = player1.currentHealth - (player2.currentDefPower + (player2.currentDefPower * player2.currentPowerBar / 100) + 
+                player1.currentKickDamage/2);
             player2.currentHealth = player2.currentHealth - 0;  
         }
         if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "kickButton")
@@ -588,11 +595,87 @@ public class GameManager : MonoBehaviourPunCallbacks
             player1.currentHealth = player1.currentHealth - 0;
             player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100);
         }
-        if (player1.selectedActionButtonName == "defButton" && player2.selectedActionButtonName == "defButton")
+        
+        // Парирование первого игрока, остальные кнопки второго игрока
+        if (player1.selectedActionButtonName == "parryButton" && player2.selectedActionButtonName == "attackButton")
         {
-            player1.currentHealth = player1.currentHealth - (player2.currentDefPower + (player2.currentDefPower * player2.currentPowerBar / 100));
-            player2.currentHealth = player2.currentHealth - player1.currentDefPower + (player1.currentPowerBar * player1.currentDefPower / 100);
-
+            player1.currentHealth = player1.currentHealth - player2.currentAttackPower / 2;
+            player2.currentHealth = player2.currentHealth - (player1.currentDefPower + (player1.currentDefPower * player1.currentPowerBar / 100) + 
+                player2.currentAttackPower/2);
+        }
+        if (player1.selectedActionButtonName == "parryButton" && player2.selectedActionButtonName == "defButton")
+        {
+            player2.currentHealth = player2.currentHealth - (player1.currentDefPower + (player1.currentDefPower * player1.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - 0;
+        }
+        if (player1.selectedActionButtonName == "parryButton" && player2.selectedActionButtonName == "parryButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentParryPower + (player2.currentParryPower * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - (player1.currentParryPower + (player1.currentParryPower * player1.currentPowerBar / 100));
+        }
+        if (player1.selectedActionButtonName == "parryButton" && player2.selectedActionButtonName == "kickButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth - (player1.currentParryPower + (player1.currentParryPower * player1.currentPowerBar / 100) +
+                player2.currentKickDamage / 2);
+        }
+        if (player1.selectedActionButtonName == "parryButton" && player2.selectedActionButtonName == "healButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100);
+        }
+        // кик первого игрока, все остальное второго игрока
+        if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "attackButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentAttackPower + (player2.currentPowerBar * player2.currentAttackPower / 100));
+            player2.currentHealth = player2.currentHealth - (player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100));
+        }
+        if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "defButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth - (player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100));
+        }
+        if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "parryButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentParryPower + (player2.currentParryPower * player2.currentPowerBar / 100) +
+                player2.currentKickDamage / 2);
+            player2.currentHealth = player2.currentHealth - ((player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100))/2);
+        }
+        if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "kickButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player2.currentKickDamage + (player2.currentKickDamage * player2.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - (player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100));
+        }
+        if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "healButton")
+        {
+            player1.currentHealth = player1.currentHealth - 0;
+            player2.currentHealth = player2.currentHealth - (player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100));
+        }
+        // хилка первого игрока, все остальное второго игрока
+        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "attackButton")
+        {
+            player1.currentHealth = player1.currentHealth - player2.currentAttackPower + (player2.currentPowerBar * player2.currentAttackPower / 100);
+            player2.currentHealth = player2.currentHealth - 0;     
+        }
+        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "defButton")
+        {
+            player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100);
+            player2.currentHealth = player2.currentHealth - 0;
+        }
+        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "parryButton")
+        {
+            player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100);
+            player2.currentHealth = player2.currentHealth - 0;
+        }
+        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "kickButton")
+        {
+            player1.currentHealth = player1.currentHealth - (player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100));
+            player2.currentHealth = player2.currentHealth - 0;
+        }
+        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "kickButton")
+        {
+            player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100););
+            player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100); ;
         }
 
     }
