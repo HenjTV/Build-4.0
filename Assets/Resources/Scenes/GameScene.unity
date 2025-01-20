@@ -3994,7 +3994,7 @@ MonoBehaviour:
     baseHealth: 1000
     baseResource: 35
     maxResource: 100
-    maxPowerBar: 0
+    maxPowerBar: 100
   - id: 1
     name: ShieldGirl
     description: ShieldGirl Desc

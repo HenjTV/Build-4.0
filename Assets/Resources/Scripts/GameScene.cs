@@ -505,9 +505,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             // механика пинка против дефа
             if (player1.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
-            { defButton.interactable = false;
-              
-            }
+            { 
+                defButton.interactable = false;
+             }
             if (player2.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 defButton.interactable = false;
@@ -519,13 +519,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (player1.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
             {
                 healButton.interactable = false;
-                player1defCD.text = player1.breakroundleftheal.ToString();
+      
             }
             if (player2.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 healButton.interactable = false;
-                player2defCD.text = player2.breakroundleftheal.ToString();
             }
+            player2defCD.text = player2.breakroundleftheal.ToString();
+            player1defCD.text = player1.breakroundleftheal.ToString();
 
 
             // апдейт 
@@ -575,14 +576,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         // проверяем, что есть кд на деф, и уменьшаем его на 1.
         if (player1.breakroundleftdefence > 0)
         {player1.breakroundleftdefence--;}
-        if (player1.breakroundleftdefence > 0)
-        { player1.breakroundleftdefence--;}
+        if (player2.breakroundleftdefence > 0)
+        { player2.breakroundleftdefence--;}
 
         // проверяем, что есть кд на хил, и уменьшаем его на 1.
         if (player1.breakroundleftheal > 0)
         { player1.breakroundleftheal--; }
-        if (player1.breakroundleftheal > 0)
-        { player1.breakroundleftheal--; }
+        if (player2.breakroundleftheal > 0)
+        { player2.breakroundleftheal--; }
         
 
         // атака первого игрока, остальные кнопки второго игрока
@@ -698,7 +699,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player1.currentHealth = player1.currentHealth - 0;
             player2.currentHealth = player2.currentHealth - (player1.currentKickPower + (player1.currentKickPower * player1.currentPowerBar / 100f));
-            player2.breakroundleftdefence = player1.currentBreakPower;
+            player2.breakroundleftheal = player1.currentBreakPower;
         }
         // хилка первого игрока, все остальное второго игрока
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "attackButton")
@@ -720,7 +721,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player1.currentHealth = player1.currentHealth - (player1.currentKickPower + (player1.currentKickPower * player1.currentPowerBar / 100f));
             player2.currentHealth = player2.currentHealth - 0;
-            player1.breakroundleftdefence = player2.currentBreakPower;
+            player1.breakroundleftheal = player2.currentBreakPower;
         }
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "healButton")
         {
