@@ -544,7 +544,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "attackButton")
         {
             player1.currentHealth = player1.currentHealth - (player2.currentAttackPower + (player2.currentAttackPower * player2.currentPowerBar / 100));
-            player2.currentHealth = player2.currentHealth - player1.currentAttackPower + (player1.currentPowerBar* player1.currentAttackPower/100);
+            player2.currentHealth = player2.currentHealth - (player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower/100));
         }
 
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "defButton")
@@ -672,7 +672,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             player1.currentHealth = player1.currentHealth - (player1.currentKickDamage + (player1.currentKickDamage * player1.currentPowerBar / 100));
             player2.currentHealth = player2.currentHealth - 0;
         }
-        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "kickButton")
+        if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "healButton")
         {
             player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100);
             player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100);

@@ -3850,8 +3850,8 @@ MonoBehaviour:
     superAbilityImage: {fileID: 21300000, guid: 25aef32787807f14cb7809bcb3821fda, type: 3}
     superAbilityDescription: Samurai Desc S
     attackPower: 100
-    defense: 50
-    parry: 150
+    defense: 100
+    parry: 100
     kickDamage: 30
     kickCooldown: 1
     healPower: 75
