@@ -22,18 +22,18 @@ public class CharacterManager : MonoBehaviour
         public Sprite avatar;                     // Аватар персонажа (картинка)
         public Sprite superAbilityImage;          // Картинка суперспособности
         [TextArea] public string superAbilityDescription; // Описание суперспособности
-        public int attackPower;                   // Сила атаки
-        public int defense;                       // Защита
-        public int parry;                         // Парирование
-        public int kickDamage;                    // Урон пинка
-        public int kickCooldown;                 // Пинок - раунды (число)
-        public int healPower;                     // Лечение
-        public int healCharges;                   // Количество лечилок
+        public int AttackPower;                   // Сила атаки
+        public int DefencePower;                       // Защита
+        public int ParryPower;                         // Парирование
+        public int KickPower;                    // Урон пинка
+        public int BreakPower;                 // Пинок - раунды (число)
+        public int HealPower;                     // Лечение
+        public int Poisons;                   // Количество лечилок
         public ResourceType resourceType;         // Ресурс (Энергия, Мана, Ярость, Концентрация, Хладнокровие)
         public int baseHealth;                    // Базовое здоровье
         public int baseResource;                  // Базовое количество ресурса
         public int maxResource;                   // Максимум ресурса
-        public int booster;                       // Максимальный множитель характеристик
+        public int maxPowerBar;                       // Максимальный множитель характеристик
     }
 
     [SerializeField]
