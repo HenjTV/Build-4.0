@@ -474,6 +474,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         photonView.RPC("SendActionDataRPC", RpcTarget.All, playerNumber, actionButtonName, sliderValue);
         Debug.Log($"Action confirmed: {actionButtonName} with power: {sliderValue}");
+
+        // отщелкиваем кнопку после нажатия кнопки принять
+
+        SetButtonState(currentActiveButton, false);
+        currentActiveButton = null;
+        powerSliderBar.gameObject.SetActive(false);
+        acceptRound.gameObject.SetActive(false);
+        
+        return;
+
     }
 
     [PunRPC]

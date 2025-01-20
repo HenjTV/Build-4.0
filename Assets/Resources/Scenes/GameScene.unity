@@ -771,7 +771,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 208.0063, y: 96.0991}
+  m_AnchoredPosition: {x: 208, y: 96.096}
   m_SizeDelta: {x: 416.0035, y: 192.1911}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &301649711
@@ -958,8 +958,8 @@ GameObject:
   - component: {fileID: 356157906}
   - component: {fileID: 356157905}
   - component: {fileID: 356157904}
-  - component: {fileID: 356157908}
   - component: {fileID: 356157907}
+  - component: {fileID: 356157908}
   m_Layer: 0
   m_Name: attackButton
   m_TagString: Untagged
@@ -1778,8 +1778,8 @@ GameObject:
   - component: {fileID: 504330188}
   - component: {fileID: 504330187}
   - component: {fileID: 504330186}
-  - component: {fileID: 504330190}
   - component: {fileID: 504330189}
+  - component: {fileID: 504330190}
   m_Layer: 0
   m_Name: defButton
   m_TagString: Untagged
@@ -2794,8 +2794,8 @@ GameObject:
   - component: {fileID: 763622527}
   - component: {fileID: 763622526}
   - component: {fileID: 763622525}
-  - component: {fileID: 763622529}
   - component: {fileID: 763622528}
+  - component: {fileID: 763622529}
   m_Layer: 0
   m_Name: parryButton
   m_TagString: Untagged
@@ -3509,8 +3509,8 @@ GameObject:
   - component: {fileID: 850758660}
   - component: {fileID: 850758659}
   - component: {fileID: 850758658}
-  - component: {fileID: 850758662}
   - component: {fileID: 850758661}
+  - component: {fileID: 850758662}
   m_Layer: 0
   m_Name: acceptroundbutton
   m_TagString: Untagged
@@ -3728,7 +3728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3d7cf682933d84596294e3cc44d8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonClickSound: {fileID: 850758661}
+  buttonClickSound: {fileID: 1598359116}
 --- !u!1 &958407321
 GameObject:
   m_ObjectHideFlags: 0
@@ -6890,8 +6890,8 @@ GameObject:
   - component: {fileID: 1914649403}
   - component: {fileID: 1914649402}
   - component: {fileID: 1914649401}
-  - component: {fileID: 1914649405}
   - component: {fileID: 1914649404}
+  - component: {fileID: 1914649405}
   m_Layer: 0
   m_Name: kickButton
   m_TagString: Untagged
@@ -7530,8 +7530,8 @@ GameObject:
   - component: {fileID: 1975402358}
   - component: {fileID: 1975402357}
   - component: {fileID: 1975402356}
-  - component: {fileID: 1975402360}
   - component: {fileID: 1975402359}
+  - component: {fileID: 1975402360}
   m_Layer: 0
   m_Name: healButton
   m_TagString: Untagged
