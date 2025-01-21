@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static CharacterManager;
 
+
 public class GameManager : MonoBehaviourPunCallbacks
 {
     [Header("UI References")]
@@ -611,6 +612,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player1.currentHealth = player1.currentHealth - (player2.currentAttackPower + (player2.currentAttackPower * player2.currentPowerBar / 100f));
             player2.currentHealth = player2.currentHealth - (player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower/ 100f));
+            // восстановление ярости за удар или получение урона 1 игрока
+            if (player1.resourceType == ResourceType.Rage)
+            {
+                player1.currentResource = player1.currentResource + 10;
+            }
+            // восстановление ярости за удар или получение урона 2 игрока
+            if (player2.resourceType == ResourceType.Rage)
+            {
+                player2.currentResource = player2.currentResource + 10;
+            }
         }
 
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "defButton")
@@ -623,12 +634,27 @@ public class GameManager : MonoBehaviourPunCallbacks
             player1.currentHealth = player1.currentHealth - (player2.currentParryPower + (player2.currentParryPower * player2.currentPowerBar / 100f) + 
                 player1.currentAttackPower / 2);
             player2.currentHealth = player2.currentHealth - player1.currentAttackPower/2;
+            // восстановление ярости за удар или получение урона 1 игрока за атаку против парирования восстанавливает половину
+            if (player1.resourceType == ResourceType.Rage)
+            {
+                player1.currentResource = player1.currentResource + 5;
+            }
         }
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "kickButton")
         {
             player1.currentHealth = player1.currentHealth - (player2.currentKickPower + (player2.currentKickPower * player2.currentPowerBar / 100f));
             player2.currentHealth = player2.currentHealth - (player1.currentAttackPower + (player1.currentPowerBar * player1.currentAttackPower / 100f));
-            
+            // восстановление ярости за удар или получение урона 1 игрока
+            if (player1.resourceType == ResourceType.Rage)
+            {
+                player1.currentResource = player1.currentResource + 10;
+            }
+            // восстановление ярости за удар или получение урона 2 игрока
+            if (player2.resourceType == ResourceType.Rage)
+            {
+                player2.currentResource = player2.currentResource + 10;
+            }
+
         }
         if (player1.selectedActionButtonName == "attackButton" && player2.selectedActionButtonName == "healButton")
         {
@@ -662,6 +688,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player1.currentHealth = player1.currentHealth - 0;
             player2.currentHealth = player2.currentHealth + (player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100f));
+            // восстановление маны за хилку 2 игрока
+            if (player2.resourceType == ResourceType.Mana)
+            {
+                player2.currentResource = player2.currentResource + 20;
+            }
         }
         
         // Парирование первого игрока, остальные кнопки второго игрока
@@ -670,6 +701,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             player1.currentHealth = player1.currentHealth - player2.currentAttackPower / 2;
             player2.currentHealth = player2.currentHealth - (player1.currentDefencePower + (player1.currentDefencePower * player1.currentPowerBar / 100f) + 
                 player2.currentAttackPower/2);
+           
+            // восстановление ярости за удар или получение урона 2 игрока (половинуу за атаку в парирование)
+            if (player2.resourceType == ResourceType.Rage)
+            {
+                player2.currentResource = player2.currentResource + 5;
+            }
         }
         if (player1.selectedActionButtonName == "parryButton" && player2.selectedActionButtonName == "defButton")
         {
@@ -691,12 +728,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player1.currentHealth = player1.currentHealth - 0;
             player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100f);
+            // восстановление маны за хилку 2 игрока
+            if (player2.resourceType == ResourceType.Mana)
+            {
+                player2.currentResource = player2.currentResource + 20;
+            }
         }
         // кик первого игрока, все остальное второго игрока
         if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "attackButton")
         {
             player1.currentHealth = player1.currentHealth - (player2.currentAttackPower + (player2.currentPowerBar * player2.currentAttackPower / 100f));
             player2.currentHealth = player2.currentHealth - (player1.currentKickPower + (player1.currentKickPower * player1.currentPowerBar / 100f));
+            // восстановление ярости за удар или получение урона 1 игрока
+            if (player1.resourceType == ResourceType.Rage)
+            {
+                player1.currentResource = player1.currentResource + 10;
+            }
+            // восстановление ярости за удар или получение урона 2 игрока
+            if (player2.resourceType == ResourceType.Rage)
+            {
+                player2.currentResource = player2.currentResource + 10;
+            }
         }
         if (player1.selectedActionButtonName == "kickButton" && player2.selectedActionButtonName == "defButton")
         {
@@ -725,17 +777,28 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "attackButton")
         {
             player1.currentHealth = player1.currentHealth - player2.currentAttackPower + (player2.currentPowerBar * player2.currentAttackPower / 100f);
-            player2.currentHealth = player2.currentHealth - 0;     
+            player2.currentHealth = player2.currentHealth - 0;   
+            
         }
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "defButton")
         {
             player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100f);
             player2.currentHealth = player2.currentHealth - 0;
+            // восстановление маны за хилку 1 игрока
+            if (player1.resourceType == ResourceType.Mana)
+            {
+                player1.currentResource = player1.currentResource + 20;
+            }
         }
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "parryButton")
         {
             player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100f);
             player2.currentHealth = player2.currentHealth - 0;
+            // восстановление маны за хилку 1 игрока
+            if (player1.resourceType == ResourceType.Mana)
+            {
+                player1.currentResource = player1.currentResource + 20;
+            }
         }
         if (player1.selectedActionButtonName == "healButton" && player2.selectedActionButtonName == "kickButton")
         {
@@ -747,7 +810,43 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100f);
             player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100f);
+            // восстановление маны за хилку 1 игрока
+            if (player1.resourceType == ResourceType.Mana)
+            {
+                player1.currentResource = player1.currentResource + 20;
+            }
+            // восстановление маны за хилку 2 игрока
+            if (player2.resourceType == ResourceType.Mana)
+            {
+                player2.currentResource = player2.currentResource + 20;
+            }
         }
+
+        // восстановление энергии +10 за раунд
+        if (player1.resourceType == ResourceType.Energy)
+        {
+            player1.currentResource = player1.currentResource + 10;
+        }
+        if (player2.resourceType == ResourceType.Energy)
+        {
+            player2.currentResource = player2.currentResource + 10;
+        }
+        // восстановление концентрации за раунд
+        if (player2.resourceType == ResourceType.Focus)
+        {
+            player2.currentResource = player2.currentResource + 10;
+        }
+        if (player2.resourceType == ResourceType.Focus)
+        {
+            player2.currentResource = player2.currentResource + 10;
+        }
+        // восстановление маны за хилку
+        if (player1.resourceType == ResourceType.Focus)
+        {
+            player1.currentResource = player1.currentResource + 10;
+        }
+
+
 
         // проверка на максимум здоровья
         if (player1.currentHealth > player1.maxHealth)
@@ -767,5 +866,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player2.currentResource = player2.maxResource;
         }
-    }
+
+
+        }
 }
+
