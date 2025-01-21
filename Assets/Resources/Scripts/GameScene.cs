@@ -514,30 +514,37 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
             // Проверяем, что есть кд на деф и отключаем кнопку, если это так
+
+            //1 игрок
             if (player1.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
             {
                 defButton.interactable = false;
             }
-            else { defButton.interactable = true;}
+            else if (PhotonNetwork.LocalPlayer.UserId == player1.Id) { defButton.interactable = true;}
+
+            //2 игрок
             if (player2.breakroundleftdefence > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 defButton.interactable = false;
             }
-            else { defButton.interactable = true;}
+            else if (PhotonNetwork.LocalPlayer.UserId == player2.Id) { healButton.interactable = true; }
             player1defCD.text = player1.breakroundleftdefence.ToString();
             player2defCD.text = player2.breakroundleftdefence.ToString();
 
             // Механика пинка против хилки, проверяем кд на хил и отключаем кнопку, если это так
+
+            //1 игрок
             if (player1.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player1.Id)
             {
                 healButton.interactable = false;
             }
-            else {  healButton.interactable = true;}
+            else if (PhotonNetwork.LocalPlayer.UserId == player1.Id) {  healButton.interactable = true;}
+            // 2 игрок
             if (player2.breakroundleftheal > 0 && PhotonNetwork.LocalPlayer.UserId == player2.Id)
             {
                 healButton.interactable = false;
             }
-            else { healButton.interactable = true; }
+            else if (PhotonNetwork.LocalPlayer.UserId == player2.Id) { healButton.interactable = true; }
             player1healCD.text = player1.breakroundleftheal.ToString();
             player2healCD.text = player2.breakroundleftheal.ToString();
 
