@@ -748,6 +748,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             player1.currentHealth = player1.currentHealth + player1.currentHealPower + (player1.currentHealPower * player1.currentPowerBar / 100f);
             player2.currentHealth = player2.currentHealth + player2.currentHealPower + (player2.currentHealPower * player2.currentPowerBar / 100f);
         }
+
+        // проверка на максимум здоровья
         if (player1.currentHealth > player1.maxHealth)
         {
             player1.currentHealth = player1.maxHealth;
@@ -756,6 +758,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             player2.currentHealth = player2.maxHealth;
         }
-
+        // проверка на максимум ресурса
+        if (player1.currentResource > player1.maxResource)
+        {
+            player1.currentResource = player1.maxResource;
+        }
+        if (player2.currentResource > player2.maxResource)
+        {
+            player2.currentResource = player2.maxResource;
+        }
     }
 }
