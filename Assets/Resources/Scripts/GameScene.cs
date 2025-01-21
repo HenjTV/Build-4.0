@@ -529,8 +529,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                 defButton.interactable = false;
             }
             else if (PhotonNetwork.LocalPlayer.UserId == player2.Id) { healButton.interactable = true; }
-            player1defCD.text = player1.breakroundleftdefence.ToString();
-            player2defCD.text = player2.breakroundleftdefence.ToString();
+
+            // проверяем, если количество раундов равно нулю, очищаем текстовое поле.
+            if (player2.breakroundleftdefence != 0) { player1defCD.text = player1.breakroundleftdefence.ToString(); } else { player1defCD.text = ""; }
+            if (player2.breakroundleftdefence != 0) { player2defCD.text = player2.breakroundleftdefence.ToString(); } else { player2defCD.text = ""; }
+
 
             // Механика пинка против хилки, проверяем кд на хил и отключаем кнопку, если это так
 
@@ -546,8 +549,8 @@ public class GameManager : MonoBehaviourPunCallbacks
                 healButton.interactable = false;
             }
             else if (PhotonNetwork.LocalPlayer.UserId == player2.Id) { healButton.interactable = true; }
-            player1healCD.text = player1.breakroundleftheal.ToString();
-            player2healCD.text = player2.breakroundleftheal.ToString();
+            if (player2.breakroundleftheal != 0) { player1healCD.text = player1.breakroundleftheal.ToString(); } else { player1healCD.text = ""; }
+            if (player2.breakroundleftheal != 0) { player1healCD.text = player2.breakroundleftheal.ToString(); } else { player1healCD.text = ""; }
 
 
             // апдейт 

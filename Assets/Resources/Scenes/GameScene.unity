@@ -3993,8 +3993,8 @@ MonoBehaviour:
     resourceType: 0
     baseHealth: 1000
     baseResource: 35
-    maxResource: 100
-    maxPowerBar: 100
+    maxResource: 50
+    maxPowerBar: 35
   - id: 1
     name: ShieldGirl
     description: ShieldGirl Desc

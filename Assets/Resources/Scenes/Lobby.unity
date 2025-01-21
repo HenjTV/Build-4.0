@@ -2416,7 +2416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3d7cf682933d84596294e3cc44d8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonClickSound: {fileID: 1859234177}
+  buttonClickSound: {fileID: 494821184}
 --- !u!1 &1988270753
 GameObject:
   m_ObjectHideFlags: 0
